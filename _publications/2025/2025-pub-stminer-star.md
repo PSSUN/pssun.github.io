@@ -11,8 +11,8 @@ abstract: >-
 
 cover: /assets/images/covers/star.jpg
 authors:
-  - Peisen Sun (孙培森)
-  - Mingxuan Li (黎明轩)
+  - Peisen Sun (孙培森)*
+  - Mingxuan Li (黎明轩)*
   - Kai Ye (叶凯)
 links:
   Paper: https://star-protocols.cell.com/protocols/4224

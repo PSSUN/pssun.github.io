@@ -12,8 +12,8 @@ abstract: >-
   Integrating spatial multi-omics data presents significant challenges, particularly in uncovering the spatial patterns of cells and deciphering the real regulatory mechanisms among various omics. These insights are critical for harnessing the full potential of each modality while minimizing the impact of biotechnological biases that will lead to unstable results. Here, we introduce SpatialCOC, a framework that treats spatial information as prior knowledge to learn omics-specific spatial distributions, then discovering nonlinear correlations among modalities. The effectiveness and robustness of SpatialCOC are validated using real-world datasets, encompassing diverse tissue sections analyzed with multiple experimental techniques. Compared to existing methods, SpatialCOC excels in identifying region-specific continuous spatial domains and maintains batch-consistency across trajectory inferences. By providing a novel perspective on the interplay between spatial information and multi-omics modalities, SpatialCOC offers a flexible approach that can accommodate modality data of arbitrary dimensions.
 cover:          /assets/images/covers/spacoc.png
 authors:
-  - Mingxuan Li (黎明轩)
-  - Peisen Sun (孙培森)
+  - Mingxuan Li (黎明轩)*
+  - Peisen Sun (孙培森)*
   - Yisi Luo (罗倚斯)
   - Guancheng Zhou (周冠程)
   - Xiaofei Yang (杨晓飞)
