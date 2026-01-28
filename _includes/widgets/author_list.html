@@ -5,15 +5,18 @@
 {%- for _key in authors -%}
     {%- assign last_char = _key | slice: -1, 1%}
     {%- assign last_2chars = _key | slice: -2, 2%}
+    {%- assign is_first_author = false -%}
     {%- if last_2chars == "*#" or last_2chars == "#*" -%}
         {%- assign key = _key | replace: "#*", "" | replace: "*#", "" -%}
         {%- assign mark = "*<sup>#</sup>" -%}
         {%- assign has_eq_contrib = true -%}
         {%- assign has_corresponding = true -%}
+        {%- assign is_first_author = true -%}
     {%- elsif last_char == "*" -%}
         {%- assign key = _key | split: "*" | first -%}
         {%- assign mark = "*" -%}
         {%- assign has_eq_contrib = true -%}
+        {%- assign is_first_author = true -%}
     {%- elsif last_char == "#" -%}
         {%- assign key = _key | split: "#" | first -%}
         {%- assign mark = '<sup>#</sup>' -%}
@@ -31,8 +34,12 @@
         {%- assign name = key -%}
     {%- endif -%}
 
-    {%- if info['bold'] == true -%}
-        {%- assign display_name = name | append: mark | prepend: "<strong>" | append: "</strong>" -%}
+    {%- if info['bold'] == true or is_first_author -%}
+        {%- if is_first_author -%}
+            {%- assign display_name = name | append: mark | prepend: "<strong style='color: #6f42c1;'>" | append: "</strong>" -%}
+        {%- else -%}
+            {%- assign display_name = name | append: mark | prepend: "<strong>" | append: "</strong>" -%}
+        {%- endif -%}
     {%- else -%}
         {%- assign display_name = name | append: mark -%}
     {%- endif -%}
