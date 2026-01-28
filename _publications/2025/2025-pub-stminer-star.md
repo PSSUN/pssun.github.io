@@ -2,7 +2,7 @@
 title:          "Protocol to decipher complex spatial transcriptomics data using STMiner"
 date:           2025-05-23
 selected:       false
-pub:            "Cell Genomics"
+pub:            "STAR protocols"
 pub_date:       "2025"
 pub_last:       ' <span class="badge badge-pill badge-publication badge-success">Featured content</span>'
 #semantic_scholar_id: 11ac0b5634a282f1a0da204b98e7473d8b480dfb  # use this to retrieve citation count
