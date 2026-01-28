@@ -36,7 +36,7 @@ portrait_caption: >-
 
 education:
 - name: Xi'an Jiaotong University
-  #logo: /assets/images/badges/XJTU_logo.png
+  logo: /assets/images/badges/XJTU.png
   position: Ph.D. in Control Science and Engineering
   date: Sep. 2022 - present
 - name: Shaanxi Normal University
@@ -44,7 +44,7 @@ education:
   position: M.S. in Bioinformatics
   date: Sep. 2018 - Jul. 2021
 - name: Northwest A&F University
-  #logo: /assets/images/badges/NWAFU_logo.png
+  logo: /assets/images/badges/NWAFU.png
   position: B.S. in Computer Science
   date: Sep. 2014 - Jul. 2018
 
