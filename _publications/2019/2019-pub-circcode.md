@@ -1,10 +1,9 @@
 ---
-title:          "Protocol to decipher complex spatial transcriptomics data using STMiner"
+title:          "CircCode: A Powerful Tool for Identifying circRNA Coding Ability"
 date:           2019-10-10
 selected:       true
 pub:            "Frontiers in Genetics"
 pub_date:       "2019"
-pub_last:       ' <span class="badge badge-pill badge-publication badge-success">Featured content</span>'
 #semantic_scholar_id: 11ac0b5634a282f1a0da204b98e7473d8b480dfb  # use this to retrieve citation count
 abstract: >-
     Circular RNAs (circRNAs), which play vital roles in many regulatory pathways, are widespread in many species. Although many circRNAs have been discovered in plants and animals, the functions of these RNAs have not been fully investigated. In addition to the function of circRNAs as microRNA (miRNA) decoys, the translation potential of circRNAs is important for the study of their functions; yet, few tools are available to identify their translation potential. With the development of high-throughput sequencing technology and the emergence of ribosome profiling technology, it is possible to identify the coding ability of circRNAs with high sensitivity. To evaluate the coding ability of circRNAs, we first developed the CircCode tool and then used CircCode to investigate the translation potential of circRNAs from humans and Arabidopsis thaliana. Based on the ribosome profile databases downloaded from NCBI, we found 3,610 and 1,569 translated circRNAs in humans and A. thaliana, respectively. Finally, we tested the performance of CircCode and found a low false discovery rate and high sensitivity for identifying circRNA coding ability. CircCode, a Python 3–based framework for identifying the coding ability of circRNAs, is also a simple and powerful command line-based tool. To investigate the translation potential of circRNAs, the user can simply fill in the given configuration file and run the Python 3 scripts.
