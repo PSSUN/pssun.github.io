@@ -8,7 +8,7 @@ pub_date:       "2025"
 abstract: >-
   Analyzing spatial transcriptomics data from tumor tissues poses several challenges beyond those of healthy samples, including unclear boundaries between different regions, uneven cell densities, and relatively higher cellular heterogeneity. Collectively, these bias the background against which spatially variable genes are identified, which can result in misidentification of spatial structures and hinder potential insight into complex pathologies. To overcome this problem, STMiner leverages 2D Gaussian mixture models and optimal transport theory to directly characterize the spatial distribution of genes rather than the capture locations of the cells expressing them (spots). By effectively mitigating the impacts of both background bias and data sparsity, STMiner reveals key gene sets and spatial structures overlooked by spot-based analytic tools, facilitating novel biological discoveries. The core concept of directly analyzing overall gene expression patterns also allows for a broader application beyond spatial transcriptomics, positioning STMiner for continuous expansion as spatial omics technologies evolve.
 
-cover:          /assets/images/covers/stminer.jpg
+cover: /assets/images/covers/stminer.jpg
 authors:
   - Peisen Sun
   - Kai Ye#
