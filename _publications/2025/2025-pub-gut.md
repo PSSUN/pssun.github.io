@@ -1,7 +1,7 @@
 ---
 title:          "Spatially resolved single-cell transcriptome analysis of murine Salmonella infection reveals the role of distal colonocytes in the inflammatory response"
 date:           2025-11-24
-selected:       true
+selected:       false
 pub:            "Gut Microbes"
 pub_date:       "2025"
 
