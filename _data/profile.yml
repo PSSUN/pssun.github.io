@@ -38,15 +38,15 @@ education:
 - name: Xi'an Jiaotong University
   logo: /assets/images/badges/XJTU.png
   position: Ph.D. in Control Science and Engineering
-  date: Sep. 2022 - present
+#  date: Sep. 2022 - present
 - name: Shaanxi Normal University
   logo: /assets/images/badges/SNNU.png
   position: M.S. in Bioinformatics
-  date: Sep. 2018 - Jul. 2021
+#  date: Sep. 2018 - Jul. 2021
 - name: Northwest A&F University
   logo: /assets/images/badges/NWAFU.png
   position: B.S. in Computer Science
-  date: Sep. 2014 - Jul. 2018
+#  date: Sep. 2014 - Jul. 2018
 
 # experience:
 # - name: Peking University
@@ -54,10 +54,10 @@ education:
 #   position: Research Intern
 #   date: Sep. 2019 - Jul. 2021
 
-# awards:
-# - name: Award Name 2
-#   date: 2024
-# - name: Award Name 1 
-#   date: 2021
-# - name: A quick brown fox jumps over the lazy dog and runs away award
-#   date: 2021
+awards:
+- name: National Scholarship
+  date: 2022
+- name: Graduate First-Class Scholarship
+  date: 2021
+- name: Graduate First-Class Scholarship
+  date: 2019
