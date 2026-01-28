@@ -10,7 +10,9 @@ images:
 - src: ./assets/images/photos/kunmingpool.jpg
   title: Kunming Pool
   desc: 
-- src: https://picsum.photos/seed/third33/800/800
+- src: ./assets/images/photos/nanning.jpg
+  title: Nanning
+  desc: 
 ---
 
 {% include widgets/carousel.html id=page.id images=page.images height=page.height %}
