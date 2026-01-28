@@ -1,7 +1,7 @@
 ---
 title:          "Protocol to decipher complex spatial transcriptomics data using STMiner"
 date:           2025-05-23
-selected:       true
+selected:       false
 pub:            "Cell Genomics"
 pub_date:       "2025"
 pub_last:       ' <span class="badge badge-pill badge-publication badge-success">Featured content</span>'
