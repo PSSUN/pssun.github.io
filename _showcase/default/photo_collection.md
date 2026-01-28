@@ -6,13 +6,13 @@ height: 295px
 images:
 - src: ./assets/images/photos/Liverpool.jpg
   title: Liverpool
-  desc: 
+  desc: Liverpool, UK
 - src: ./assets/images/photos/kunmingpool.jpg
   title: Kunming Pool
-  desc: 
+  desc: Xi'an, China
 - src: ./assets/images/photos/nanning.jpg
   title: Nanning
-  desc: 
+  desc: Nanning, China
 ---
 
 {% include widgets/carousel.html id=page.id images=page.images height=page.height %}
