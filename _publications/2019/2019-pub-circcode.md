@@ -10,7 +10,7 @@ abstract: >-
 
 cover: /assets/images/covers/circcode.jpg
 authors:
-  - Peisen Sun*
+  - Peisen Sun
   - Guanglin Li
 links:
   Paper: https://www.frontiersin.org/journals/genetics/articles/10.3389/fgene.2019.00981/full
