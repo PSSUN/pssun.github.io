@@ -93,6 +93,76 @@
 </div>
 
 
+<div class="row mt-3">
+    <div class="col">
+        <div class="card border-0 shadow-sm bg-white links-card">
+            <div class="card-body px-4 py-3">
+                <h6 class="card-title text-muted mb-3" style="font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;">
+                    <i class="fas fa-link mr-2"></i>LINKS
+                </h6>
+                <a href="https://gr.xjtu.edu.cn/en/web/kaiye" target="_blank" class="d-flex align-items-center text-decoration-none link-item py-2">
+                    <div class="link-icon mr-3">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">Ye Kai Lab</div>
+                        <div class="link-desc text-muted small">Ph.D. Supervisor</div>
+                    </div>
+                    <i class="fas fa-external-link-alt ml-auto text-muted small"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.links-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+}
+
+.links-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.link-item {
+    color: #1d1d1f;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    margin: 0 -8px;
+    padding: 12px 8px;
+}
+
+.link-item:hover {
+    background: rgba(0, 122, 255, 0.05);
+    color: #007AFF;
+    text-decoration: none;
+}
+
+.link-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.link-title {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.link-desc {
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+</style>
+
 {% if site.data.profile.wechat_qrcode %}
 <div class="modal fade" id="modal-wechat" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-sm">
