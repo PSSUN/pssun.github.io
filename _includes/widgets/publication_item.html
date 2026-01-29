@@ -1,6 +1,6 @@
 {% assign item = include.item %}
 <div class="d-none d-md-block">
-    <div class="pub-item-wrapper py-3">
+    <div class="pub-item-wrapper">
         <div class="row no-gutters pub-card {% unless include.hide_bottom_border %}border-bottom{% endunless %} border-gray">
             <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
                 {%- if item.cover -%}
@@ -58,12 +58,14 @@
 <style>
 .pub-item-wrapper {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0 -12px;
+    padding: 0 12px;
 }
 
 .pub-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 12px;
-    padding: 8px 0;
+    padding: 16px 12px;
 }
 
 .pub-item-wrapper:hover .pub-card {
