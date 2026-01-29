@@ -37,7 +37,7 @@
                             {{ position.name }}<br/>
                             {% endfor %}
                         </div>
-                        <div class="text-profile-bio mt-3" {% if site.data.profile.short_bio_text_justify %}style="text-align: justify;"{% endif %}>
+                        <div class="text-profile-bio mt-3 profile-bio-hover" {% if site.data.profile.short_bio_text_justify %}style="text-align: justify;"{% endif %}>
                             {{ site.data.profile.short_bio }}
                         </div>
                         {% if site.data.profile.cv_link %}
@@ -142,5 +142,18 @@
 
 .profile-portrait {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-bio-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    padding: 12px;
+    margin: -12px;
+}
+
+.profile-bio-hover:hover {
+    background: rgba(0, 122, 255, 0.03);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
 }
 </style>
