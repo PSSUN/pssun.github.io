@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col">
-        <div class="card border-0 shadow-sm bg-white">
+        <div class="card border-0 shadow-sm bg-white profile-card-hover">
             <div class="card-body p-5">
                 <div class="row">
                     <div class="col">
                         {% if site.data.profile.portrait_url %}
                         <!-- When the screen is wider than md, float the portrait on the right -->
-                        <div class="figure float-right ml-4 mb-4 d-none d-md-block">
+                        <div class="figure float-right ml-4 mb-4 d-none d-md-block profile-portrait-wrapper">
                             <img 
                                 src="{{ site.data.profile.portrait_url | relative_url }}" 
-                                class="figure-img img-fluid img-thumbnail" 
+                                class="figure-img img-fluid img-thumbnail profile-portrait" 
                                 style="height: 200px; border-radius: 12px;" 
                                 data-toggle="tooltip" 
                                 data-placement="top" 
@@ -119,3 +119,28 @@
     </div>
 </div>
 {% endif %}
+
+<style>
+.profile-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-card-hover:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 
+                0 2px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.profile-portrait-wrapper {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-portrait-wrapper:hover .profile-portrait {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px) scale(1.02);
+}
+
+.profile-portrait {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
