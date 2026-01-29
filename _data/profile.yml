@@ -16,15 +16,15 @@ orcid: 0000-0003-0796-2133
 
 short_bio_text_justify: false
 short_bio: >-
-  &lt;p&gt;
+  <p>
     I am Peisen Sun, a Ph.D. candidate in the Department of Control Science and Engineering at Xi'an Jiaotong University. My primary research focus is in bioinformatics.
-  &lt;/p&gt;
-  &lt;p&gt;
+  </p>
+  <p>
     Leveraging machine learning and artificial intelligence approaches, I investigate genomics-related problems based on cutting-edge single-cell and spatial omics data, with the aim of advancing our understanding of biological systems at the molecular level.
-  &lt;/p&gt;
-  &lt;p&gt;
+  </p>
+  <p>
     Related research outcomes have been published as first author (including co-first author) in prestigious journals such as Cell Genomics and Nature Communications.
-  &lt;/p&gt;
+  </p>
 
 portrait_url: /assets/images/photos/me.png
 portrait_caption: |
