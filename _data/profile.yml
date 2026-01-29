@@ -5,7 +5,7 @@ navbar_name: "Peisen Sun (孙培森)"
 positions:
 - name: Ph.D. Student
 - name: Xi'an Jiaotong University
-  logo: /assets/images/badges/XJTU.png  # Logo is optional
+  logo: /assets/images/badges/XJTU.png
 
 
 email: "sunpeisen@stu.xjtu.edu.cn"
@@ -27,8 +27,8 @@ short_bio: >-
   </p>
 
 portrait_url: /assets/images/photos/me.png
-portrait_caption: >-
-  Peisen Sun (孙培森), Ph.D. Student, Xi'an Jiaotong University<br>
+portrait_caption: |
+  Peisen Sun (孙培森), Ph.D. Student, Xi'an Jiaotong University
   西安交通大学-电子信息学部
 
 education:
