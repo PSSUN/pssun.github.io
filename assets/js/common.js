@@ -40,3 +40,26 @@ $(function () {
         $grid.masonry('layout');
     });
 })
+
+
+// Back to Top Button Functionality
+$(function() {
+    const backToTopBtn = $('#back-to-top');
+    
+    // Show/hide button based on scroll position
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 300) {
+            backToTopBtn.addClass('show');
+        } else {
+            backToTopBtn.removeClass('show');
+        }
+    });
+    
+    // Smooth scroll to top when clicked
+    backToTopBtn.click(function(e) {
+        e.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 600, 'swing');
+    });
+});
