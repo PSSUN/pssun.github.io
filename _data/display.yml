@@ -19,6 +19,6 @@ footer_text: >-
       var passed = now - startOfYear;
       var total = endOfYear - startOfYear;
       var percent = (passed / total * 100).toFixed(2);
-      document.getElementById('current-date').innerText = year + '-' + month + '-' + day + '-' + weekDay + '  ' + percent + '% of the year has passed';
+      document.getElementById('current-date').innerText = year + '-' + month + '-' + day + '-' + weekDay + ' | ' + percent + '% of the year has passed';
     </script>
   </div>
