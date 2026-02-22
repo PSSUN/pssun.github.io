@@ -9,7 +9,7 @@ footer_text: >-
     <span id="current-date" style="font-size: 1em;"></span>
     <script>
       var now = new Date();
-      var weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       var year = now.getFullYear();
       var month = String(now.getMonth() + 1).padStart(2, '0');
       var day = String(now.getDate()).padStart(2, '0');
@@ -19,6 +19,6 @@ footer_text: >-
       var passed = now - startOfYear;
       var total = endOfYear - startOfYear;
       var percent = (passed / total * 100).toFixed(2);
-      document.getElementById('current-date').innerText = year + '-' + month + '-' + day + '-' + weekDay + ' 今年已过' + percent + '%';
+      document.getElementById('current-date').innerText = year + '-' + month + '-' + day + '-' + weekDay + '  ' + Percent + '% of the year has passed';
     </script>
   </div>
