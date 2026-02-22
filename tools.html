@@ -9,59 +9,47 @@ navbar_title: Tools
         <h1 class="mb-4">Tools & Software</h1>
         
         <div class="my-0 p-0 bg-white shadow-sm rounded-xl">
-            <!-- STMiner Tool -->
-            <div class="tool-item border-bottom border-gray">
+            {% assign tools = site.tools | sort: "date" | reverse %}
+            {% for tool in tools %}
+            <div class="tool-item {% unless forloop.last %}border-bottom border-gray{% endunless %}">
                 <div class="row no-gutters">
                     <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
-                        <img data-src="{{ '/assets/images/covers/stminer.jpg' | relative_url }}" alt="STMiner" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+                        {% if tool.cover %}
+                        <img data-src="{{ tool.cover | relative_url }}" alt="{{ tool.title }}" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+                        {% else %}
+                        <svg class="bubble-visual-hash lazy w-100 rounded-sm" data-bubble-visual-hash="{{ tool.id }}" viewBox="0 0 300 200"></svg>
+                        {% endif %}
                     </div>
                     <div class="col-md-9 col-xl-10 p-3 pl-md-0">
-                        <h5 class="mt-0 mb-1 font-weight-normal">STMiner</h5>
-                        <p class="mt-0 mb-1 small text-muted font-weight-bold">Gene-centric Spatial Transcriptomics Analysis Tool</p>
-                        <p class="mt-2 mb-2 small text-muted">
-                            STMiner is a Python package for analyzing spatial transcriptomics data. It leverages 2D Gaussian mixture models and optimal transport theory to directly characterize the spatial distribution of genes, effectively mitigating the impacts of background bias and data sparsity. STMiner reveals key gene sets and spatial structures overlooked by spot-based analytic tools, facilitating novel biological discoveries in tumor tissues and complex spatial data.
-                        </p>
+                        <h5 class="mt-0 mb-1 font-weight-normal">{{ tool.title }}</h5>
+                        {% if tool.subtitle %}
+                        <p class="mt-0 mb-1 small text-muted font-weight-bold">{{ tool.subtitle }}</p>
+                        {% endif %}
+                        <p class="mt-2 mb-2 small text-muted">{{ tool.description }}</p>
+                        {% if tool.tags %}
                         <p class="mt-2 mb-1 small">
-                            <span class="badge badge-primary">Python</span>
-                            <span class="badge badge-info">Spatial Transcriptomics</span>
-                            <span class="badge badge-success">Bioinformatics</span>
+                            {% for tag in tool.tags %}
+                            {% if tag == "Python" %}
+                            <span class="badge badge-primary">{{ tag }}</span>
+                            {% elsif tag contains "Spatial" or tag contains "Transcriptomics" %}
+                            <span class="badge badge-info">{{ tag }}</span>
+                            {% elsif tag contains "Multi-omics" or tag contains "Deep Learning" %}
+                            <span class="badge badge-warning">{{ tag }}</span>
+                            {% else %}
+                            <span class="badge badge-success">{{ tag }}</span>
+                            {% endif %}
+                            {% endfor %}
                         </p>
+                        {% endif %}
                         <p class="small pb-0 mb-0 lh-125 text-muted">
-                            <a target="_blank" href="https://github.com/xjtu-omics/STMiner">[GitHub]</a>
-                            <a target="_blank" href="https://stminerdoc.readthedocs.io/">[Documentation]</a>
-                            <a target="_blank" href="https://pypi.org/project/STMiner/">[PyPI]</a>
-                            <a target="_blank" href="https://www.cell.com/cell-genomics/fulltext/S2666-979X(25)00027-8">[Paper]</a>
+                            {% for link in tool.links %}
+                            <a target="_blank" href="{{ link[1] }}">[{{ link[0] }}]</a>
+                            {% endfor %}
                         </p>
                     </div>
                 </div>
             </div>
-            
-            <!-- SpatialCOC Tool -->
-            <div class="tool-item border-bottom border-gray">
-                <div class="row no-gutters">
-                    <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
-                        <img data-src="{{ '/assets/images/covers/spacoc.png' | relative_url }}" alt="SpatialCOC" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
-                    </div>
-                    <div class="col-md-9 col-xl-10 p-3 pl-md-0">
-                        <h5 class="mt-0 mb-1 font-weight-normal">SpatialCOC</h5>
-                        <p class="mt-0 mb-1 small text-muted font-weight-bold">Spatial Multi-omics Integration Framework</p>
-                        <p class="mt-2 mb-2 small text-muted">
-                            SpatialCOC is a deep learning framework that deciphers cellular spatial organization and cross-omics relationships in spatial multi-omics data. It treats different omics modalities as continuous functions defined by their shared spatial coordinates, enabling it to uncover nonlinear correlations among these modalities. SpatialCOC excels in identifying region-specific continuous spatial domains and maintains batch-consistency across trajectory inferences.
-                        </p>
-                        <p class="mt-2 mb-1 small">
-                            <span class="badge badge-primary">Python</span>
-                            <span class="badge badge-info">Deep Learning</span>
-                            <span class="badge badge-warning">Multi-omics</span>
-                            <span class="badge badge-success">Spatial Biology</span>
-                        </p>
-                        <p class="small pb-0 mb-0 lh-125 text-muted">
-                            <a target="_blank" href="https://github.com/xjtu-omics/SpatialCOC">[GitHub]</a>
-                            <a target="_blank" href="https://spatialcoc.readthedocs.io/">[Documentation]</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -75,9 +63,5 @@ navbar_title: Tools
 .tool-item:hover {
     background-color: #f8f9fa;
     transform: translateX(5px);
-}
-
-.tool-item:last-child {
-    border-bottom: none !important;
 }
 </style>
