@@ -6,5 +6,15 @@ homepage:
 
 footer_text: >-
   <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+    <span id="current-date" style="font-size: 1em;"></span>
+    <script>
+      var now = new Date();
+      var weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      var year = now.getFullYear();
+      var month = String(now.getMonth() + 1).padStart(2, '0');
+      var day = String(now.getDate()).padStart(2, '0');
+      var weekDay = weekDays[now.getDay()];
+      document.getElementById('current-date').innerText = year + '-' + month + '-' + day + '-' + weekDay;
+    </script>
     <span style="font-size: 1.1em;">less is more</span>
   </div>
