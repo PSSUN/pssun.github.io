@@ -6,11 +6,52 @@ navbar_title: Tools
 
 <div class="row">
     <div class="col-12">
-        <h1 class="mb-4">Tools</h1>
+        <h1 class="mb-4">Tools & Software</h1>
+        
         <div class="my-0 p-0 bg-white shadow-sm rounded-xl">
-            <div class="p-4">
-                <p>Tools and resources will be listed here.</p>
+            <!-- STMiner Tool -->
+            <div class="tool-item border-bottom border-gray">
+                <div class="row no-gutters">
+                    <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
+                        <img data-src="{{ '/assets/images/covers/stminer.jpg' | relative_url }}" alt="STMiner" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+                    </div>
+                    <div class="col-md-9 col-xl-10 p-3 pl-md-0">
+                        <h5 class="mt-0 mb-1 font-weight-normal">STMiner</h5>
+                        <p class="mt-0 mb-1 small text-muted font-weight-bold">Gene-centric Spatial Transcriptomics Analysis Tool</p>
+                        <p class="mt-2 mb-2 small text-muted">
+                            STMiner is a Python package for analyzing spatial transcriptomics data. It leverages 2D Gaussian mixture models and optimal transport theory to directly characterize the spatial distribution of genes, effectively mitigating the impacts of background bias and data sparsity. STMiner reveals key gene sets and spatial structures overlooked by spot-based analytic tools, facilitating novel biological discoveries in tumor tissues and complex spatial data.
+                        </p>
+                        <p class="mt-2 mb-1 small">
+                            <span class="badge badge-primary">Python</span>
+                            <span class="badge badge-info">Spatial Transcriptomics</span>
+                            <span class="badge badge-success">Bioinformatics</span>
+                        </p>
+                        <p class="small pb-0 mb-0 lh-125 text-muted">
+                            <a target="_blank" href="https://github.com/xjtu-omics/STMiner">[GitHub]</a>
+                            <a target="_blank" href="https://stminer.readthedocs.io/">[Documentation]</a>
+                            <a target="_blank" href="https://pypi.org/project/STMiner/">[PyPI]</a>
+                            <a target="_blank" href="https://www.cell.com/cell-genomics/fulltext/S2666-979X(25)00027-8">[Paper]</a>
+                        </p>
+                    </div>
+                </div>
             </div>
+            
         </div>
     </div>
 </div>
+
+<style>
+.tool-item {
+    padding: 16px 12px;
+    transition: all 0.3s ease;
+}
+
+.tool-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.tool-item:last-child {
+    border-bottom: none !important;
+}
+</style>
