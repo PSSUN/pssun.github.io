@@ -37,6 +37,13 @@ body {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+mark {
+    background-color: rgba(var(--color-surface-rgb), 0.5);
+    color: var(--color-text);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+}
+
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
     font-weight: 700;
