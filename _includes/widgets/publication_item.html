@@ -67,7 +67,7 @@
     border-radius: 12px;
     padding: 16px 12px;
     position: relative;
-    background: #fff;
+    background: var(--color-surface);
 }
 
 .pub-card::before {
@@ -94,8 +94,8 @@
     z-index: -1;
     padding: 1px;
     -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
+        linear-gradient(var(--color-text) 0 0) content-box, 
+        linear-gradient(var(--color-text) 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
 }
@@ -122,8 +122,8 @@
     pointer-events: none;
     z-index: 0;
     -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
+        linear-gradient(var(--color-text) 0 0) content-box, 
+        linear-gradient(var(--color-text) 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
 }
@@ -143,7 +143,7 @@
 }
 
 .pub-item-wrapper:hover .pub-card {
-    background: #fff;
+    background: var(--color-surface);
     box-shadow: 0 4px 24px rgba(0, 122, 255, 0.12);
     transform: translateY(-3px);
 }
