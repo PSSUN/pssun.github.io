@@ -3,6 +3,7 @@
 :root {
     --color-bg: #f5f6f8;
     --color-surface: #ffffff;
+    --color-surface-rgb: 255, 255, 255;
     --color-surface-muted: #f1f3f5;
     --color-text: #1d1d1f;
     --color-text-muted: #5f6368;
@@ -16,6 +17,7 @@
 :root[data-theme="dark"] {
     --color-bg: #0f1115;
     --color-surface: #181b22;
+    --color-surface-rgb: 24, 27, 34;
     --color-surface-muted: #1f232d;
     --color-text: #e6eaf2;
     --color-text-muted: #b7becd;

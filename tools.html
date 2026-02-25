@@ -8,10 +8,10 @@ navbar_title: Tools
     <div class="col-12">
         <h1 class="mb-4">Tools & Software</h1>
         
-        <div class="my-0 p-0 bg-white shadow-sm rounded-xl">
+        <div class="my-0 p-0 shadow-sm rounded-xl">
             {% assign tools = site.tools | sort: "date" | reverse %}
             {% for tool in tools %}
-            <div class="tool-item {% unless forloop.last %}border-bottom border-gray{% endunless %}">
+            <div class="tool-item {% unless forloop.last %}border-bottom{% endunless %}">
                 <div class="row no-gutters">
                     <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
                         {% if tool.cover %}
@@ -61,7 +61,7 @@ navbar_title: Tools
 }
 
 .tool-item:hover {
-    background-color: #f8f9fa;
+    background-color: var(--color-surface-muted);
     transform: translateX(5px);
 }
 </style>

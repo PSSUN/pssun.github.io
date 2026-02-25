@@ -30,7 +30,7 @@ container_class: container-xl
         {%- assign width_xs = item.width | times: 2 | at_most: 12 -%}
     {%- endif -%}
     <div class="p-2 grid-item col-md-{{ item.width | at_most: 12 }} col-sm-{{ width_sm }} col-{{ width_xs }}">
-        <div class="{% if item.class != null %}{{ item.class }}{% else %}card border-0 shadow-sm bg-white{% endif %}">
+        <div class="{% if item.class != null %}{{ item.class }}{% else %}card border-0 shadow-sm{% endif %}">
             {{ item.content }}
         </div>
     </div>
