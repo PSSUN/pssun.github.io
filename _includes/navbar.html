@@ -208,8 +208,10 @@
             return;
         }
 
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        themeToggle.checked = currentTheme === 'dark';
+        // Get theme from localStorage or use default (light)
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.checked = savedTheme === 'dark';
 
         themeToggle.addEventListener('change', function () {
             const nextTheme = this.checked ? 'dark' : 'light';
