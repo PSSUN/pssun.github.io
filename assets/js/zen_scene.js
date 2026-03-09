@@ -86,7 +86,7 @@
         flatShading: true
     });
 
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.28, 3.5, 12), trunkMaterial);
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.28, 3.5, 12), trunkMaterial);
     trunk.position.set(0, 1.75, 0);
     trunk.castShadow = true;
     trunk.receiveShadow = true;
