@@ -53,8 +53,8 @@
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(darkMode ? 0x0d1420 : 0xe8f0f8, darkMode ? 0.015 : 0.018);
 
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
-    camera.position.set(0, 2.5, 8);
+    const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
+    camera.position.set(0, 2.2, 6.5);
 
     const ambientLight = new THREE.HemisphereLight(
         darkMode ? 0x8fb0d9 : 0xe8f4ff,
