@@ -25,26 +25,6 @@
 
     let { width, height } = getViewportSize();
     const darkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-    const quoteEl = document.getElementById('zen-quote');
-
-    const quotes = [
-        'Still water does not hurry, yet it reflects the sky.',
-        'Growth is often quiet enough to be mistaken for stillness.',
-        'What bends with the wind learns how to remain.',
-        'The tree keeps no score; it simply reaches for light.',
-        'Peace is not empty — it is spacious.',
-        'A gentle pace can still carry you far.',
-        'Silence is sometimes the clearest answer.',
-        'What is rooted deeply does not fear a passing storm.',
-        'Let the mind settle, and the world becomes less sharp.',
-        'You do not need to bloom loudly to be alive.',
-        'Even the night is full of small lights.',
-        'Rest is not the opposite of becoming; it is part of it.'
-    ];
-
-    if (quoteEl) {
-        quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
-    }
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
