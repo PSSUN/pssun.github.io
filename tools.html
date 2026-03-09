@@ -8,7 +8,7 @@ navbar_title: Tools
     <div class="col-12">
         <h1 class="mb-4">Tools & Software</h1>
         
-        <div class="my-0 p-0 shadow-sm rounded-xl">
+        <div class="my-0 p-0 shadow-sm rounded-xl" style="background: var(--color-surface); border: 1px solid var(--color-border);">
             {% assign tools = site.tools | sort: "date" | reverse %}
             {% for tool in tools %}
             <div class="tool-item {% unless forloop.last %}border-bottom{% endunless %}">
