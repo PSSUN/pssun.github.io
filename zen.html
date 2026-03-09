@@ -15,16 +15,17 @@ navbar_title: Zen
 <style>
 .zen-page {
     position: relative;
-    min-height: calc(100vh - 5rem);
+    min-height: calc(100vh - 3rem);
     overflow: hidden;
 }
 
 .zen-scene {
+    position: fixed;
+    top: 3rem;
+    left: 0;
     width: 100%;
-    min-height: 560px;
-    height: calc(100vh - 5rem);
+    height: calc(100vh - 3rem);
     border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
     background:
         radial-gradient(circle at 50% 18%, rgba(255,255,255,0.28), rgba(255,255,255,0) 35%),
         linear-gradient(180deg, #bcdcff 0%, #d8ebff 36%, #edf6ff 68%, #f5f7fb 100%);
@@ -76,7 +77,8 @@ navbar_title: Zen
         border-radius: 24px;
     }
     .zen-scene {
-        height: calc(100vh - 5rem);
+        top: 2.5rem;
+        height: calc(100vh - 2.5rem);
     }
 }
 </style>
