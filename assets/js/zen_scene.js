@@ -235,43 +235,66 @@
 
     const clouds = [];
     if (!darkMode) {
-        const cloudMaterial = new THREE.MeshStandardMaterial({
+        const cloudTopMaterial = new THREE.MeshStandardMaterial({
             color: 0xffffff,
-            roughness: 0.98,
+            roughness: 1,
             transparent: true,
-            opacity: 0.78
+            opacity: 0.84
         });
+        const cloudBaseMaterial = new THREE.MeshStandardMaterial({
+            color: 0xdfe7f2,
+            roughness: 1,
+            transparent: true,
+            opacity: 0.76
+        });
+        const puffGeometry = new THREE.SphereGeometry(1, 12, 12);
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 7; i++) {
             const cloud = new THREE.Group();
-            const puffs = [
-                { x: -0.28, y: 0.0, z: 0.0, s: 0.25 },
-                { x: 0.0, y: 0.07, z: 0.03, s: 0.32 },
-                { x: 0.28, y: 0.0, z: -0.02, s: 0.24 },
-                { x: 0.12, y: -0.03, z: 0.18, s: 0.2 }
-            ];
+            const puffCount = 9 + Math.floor(Math.random() * 6);
+            const spreadX = 0.9 + Math.random() * 0.9;
+            const spreadZ = 0.35 + Math.random() * 0.45;
+            const capLift = 0.1 + Math.random() * 0.08;
 
-            puffs.forEach((puff) => {
-                const puffMesh = new THREE.Mesh(new THREE.SphereGeometry(puff.s, 8, 8), cloudMaterial);
-                puffMesh.position.set(puff.x, puff.y, puff.z);
+            for (let j = 0; j < puffCount; j++) {
+                const angle = Math.random() * Math.PI * 2;
+                const ring = 0.2 + Math.pow(Math.random(), 0.75) * 0.85;
+                const x = Math.cos(angle) * ring * spreadX;
+                const z = Math.sin(angle) * ring * spreadZ;
+                const edge = Math.max(0, 1 - Math.sqrt((x * x) / (spreadX * spreadX) + (z * z) / (spreadZ * spreadZ)));
+                const y = (Math.random() - 0.55) * 0.14 + edge * capLift;
+                const size = 0.16 + Math.random() * 0.2 + edge * 0.11;
+
+                const puffMesh = new THREE.Mesh(puffGeometry, y > 0.03 ? cloudTopMaterial : cloudBaseMaterial);
+                puffMesh.position.set(x, y, z);
+                puffMesh.scale.set(
+                    size * (0.95 + Math.random() * 0.24),
+                    size * (0.62 + Math.random() * 0.24),
+                    size * (0.9 + Math.random() * 0.22)
+                );
                 puffMesh.castShadow = false;
                 puffMesh.receiveShadow = false;
                 cloud.add(puffMesh);
-            });
+            }
 
             const theta = Math.random() * Math.PI * 2;
-            const radius = 6 + Math.random() * 4;
-            const baseX = Math.cos(theta) * radius;
-            const baseZ = Math.sin(theta) * radius * 0.6;
-            const baseY = 4.5 + Math.random() * 1.0;
+            const radiusX = 6.2 + Math.random() * 5.2;
+            const radiusZ = 2.4 + Math.random() * 2.6;
+            const baseX = Math.cos(theta) * radiusX;
+            const baseZ = Math.sin(theta) * radiusZ;
+            const baseY = 4.45 + Math.random() * 1.25;
 
             cloud.position.set(baseX, baseY, baseZ);
-            cloud.scale.setScalar(0.9 + Math.random() * 0.5);
+            cloud.rotation.y = Math.random() * Math.PI;
+            cloud.scale.setScalar(0.9 + Math.random() * 0.45);
             cloud.userData.baseX = baseX;
             cloud.userData.baseY = baseY;
             cloud.userData.baseZ = baseZ;
             cloud.userData.phase = Math.random() * Math.PI * 2;
-            cloud.userData.speed = 0.08 + Math.random() * 0.08;
+            cloud.userData.speed = 0.035 + Math.random() * 0.045;
+            cloud.userData.driftX = 0.28 + Math.random() * 0.34;
+            cloud.userData.driftZ = 0.1 + Math.random() * 0.16;
+            cloud.userData.driftY = 0.012 + Math.random() * 0.018;
 
             scene.add(cloud);
             clouds.push(cloud);
@@ -312,9 +335,9 @@
         });
 
         clouds.forEach((cloud) => {
-            const driftX = Math.sin(t * cloud.userData.speed + cloud.userData.phase) * 0.45;
-            const driftZ = Math.cos(t * cloud.userData.speed * 0.7 + cloud.userData.phase) * 0.2;
-            const driftY = Math.sin(t * cloud.userData.speed * 0.5 + cloud.userData.phase) * 0.03;
+            const driftX = Math.sin(t * cloud.userData.speed + cloud.userData.phase) * cloud.userData.driftX;
+            const driftZ = Math.cos(t * cloud.userData.speed * 0.7 + cloud.userData.phase) * cloud.userData.driftZ;
+            const driftY = Math.sin(t * cloud.userData.speed * 0.45 + cloud.userData.phase) * cloud.userData.driftY;
             cloud.position.x = cloud.userData.baseX + driftX;
             cloud.position.z = cloud.userData.baseZ + driftZ;
             cloud.position.y = cloud.userData.baseY + driftY;
