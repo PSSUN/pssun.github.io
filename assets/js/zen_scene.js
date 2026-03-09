@@ -51,7 +51,17 @@
             moon: {
                 color: 0xcfe3ff,
                 intensity: 0.34,
-                position: { x: -6, y: 7.5, z: -4 }
+                position: { x: -6.4, y: 6.2, z: -8.6 },
+                shadow: {
+                    width: 1024,
+                    height: 1024,
+                    near: 0.5,
+                    far: 30,
+                    left: -8,
+                    right: 8,
+                    top: 8,
+                    bottom: -8
+                }
             }
         },
         animation: {
@@ -452,6 +462,15 @@
         SCENE_CONFIG.lights.moon.position.y,
         SCENE_CONFIG.lights.moon.position.z
     );
+    moonLight.castShadow = currentThemeKey === 'dark';
+    moonLight.shadow.mapSize.width = SCENE_CONFIG.lights.moon.shadow.width;
+    moonLight.shadow.mapSize.height = SCENE_CONFIG.lights.moon.shadow.height;
+    moonLight.shadow.camera.near = SCENE_CONFIG.lights.moon.shadow.near;
+    moonLight.shadow.camera.far = SCENE_CONFIG.lights.moon.shadow.far;
+    moonLight.shadow.camera.left = SCENE_CONFIG.lights.moon.shadow.left;
+    moonLight.shadow.camera.right = SCENE_CONFIG.lights.moon.shadow.right;
+    moonLight.shadow.camera.top = SCENE_CONFIG.lights.moon.shadow.top;
+    moonLight.shadow.camera.bottom = SCENE_CONFIG.lights.moon.shadow.bottom;
     scene.add(moonLight);
 
     const treeGroup = new THREE.Group();
@@ -724,6 +743,10 @@
         const activeGrassCount = darkTheme ? GROUND_CONFIG.grass.darkCount : GROUND_CONFIG.grass.lightCount;
         moon.visible = darkTheme;
         moonLight.intensity = darkTheme ? SCENE_CONFIG.lights.moon.intensity : 0;
+        sunLight.castShadow = !darkTheme;
+        moonLight.castShadow = darkTheme;
+        sunLight.shadow.needsUpdate = true;
+        moonLight.shadow.needsUpdate = true;
 
         stars.forEach(function (star) {
             star.visible = darkTheme;
