@@ -139,6 +139,7 @@
         ],
         mountainPositionY: -1.2,
         mountainSegments: 7,
+        snowCapMinHeight: 3.1,
         snowCapHeightScale: 0.12,
         snowCapRadiusScale: 0.4,
         snowCapYOffset: -0.02
@@ -559,14 +560,16 @@
         peak.position.y = mountain.h * 0.5;
         singleMountainGroup.add(peak);
 
-        const snowCap = new THREE.Mesh(sharedGeometries.mountainPeak, sharedMaterials.snow);
-        snowCap.scale.set(
-            mountain.r * GROUND_CONFIG.snowCapRadiusScale,
-            mountain.h * GROUND_CONFIG.snowCapHeightScale,
-            mountain.r * GROUND_CONFIG.snowCapRadiusScale
-        );
-        snowCap.position.y = mountain.h - (mountain.h * GROUND_CONFIG.snowCapHeightScale) + GROUND_CONFIG.snowCapYOffset;
-        singleMountainGroup.add(snowCap);
+        if (mountain.h >= GROUND_CONFIG.snowCapMinHeight) {
+            const snowCap = new THREE.Mesh(sharedGeometries.mountainPeak, sharedMaterials.snow);
+            snowCap.scale.set(
+                mountain.r * GROUND_CONFIG.snowCapRadiusScale,
+                mountain.h * GROUND_CONFIG.snowCapHeightScale,
+                mountain.r * GROUND_CONFIG.snowCapRadiusScale
+            );
+            snowCap.position.y = mountain.h - (mountain.h * GROUND_CONFIG.snowCapHeightScale) + GROUND_CONFIG.snowCapYOffset;
+            singleMountainGroup.add(snowCap);
+        }
 
         singleMountainGroup.position.set(mountain.x, GROUND_CONFIG.mountainPositionY, mountain.z);
         singleMountainGroup.rotation.y = Math.random() * Math.PI;
