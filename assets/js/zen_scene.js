@@ -1,11 +1,29 @@
 (function () {
     const mount = document.getElementById('zen-scene');
-    if (!mount || typeof THREE === 'undefined') return;
+    if (!mount) return;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(mount.clientWidth, mount.clientHeight);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    if (typeof THREE === 'undefined') {
+        mount.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--color-text-muted);font-size:0.95rem;">3D scene failed to load: Three.js unavailable.</div>';
+        return;
+    }
+
+    let renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (error) {
+        mount.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--color-text-muted);font-size:0.95rem;">3D scene failed to initialize on this browser/device.</div>';
+        return;
+    }
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(mount.clientWidth || mount.offsetWidth || window.innerWidth, mount.clientHeight || mount.offsetHeight || 600);
+
+    if ('outputColorSpace' in renderer && THREE.SRGBColorSpace) {
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+    } else if ('outputEncoding' in renderer && THREE.sRGBEncoding) {
+        renderer.outputEncoding = THREE.sRGBEncoding;
+    }
+
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
