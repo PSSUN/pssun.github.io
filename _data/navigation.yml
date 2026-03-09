@@ -9,3 +9,5 @@ pages:
   url: /tools
 - name: Showcase
   url: /showcase
+- name: Zen
+  url: /zen

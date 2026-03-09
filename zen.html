@@ -1,0 +1,82 @@
+---
+layout: default
+title : Zen
+navbar_title: Zen
+container_class: container-fluid px-0
+---
+
+<div class="zen-page">
+    <div id="zen-scene" class="zen-scene"></div>
+    <div class="zen-overlay">
+        <div class="zen-title">Zen</div>
+        <div class="zen-subtitle">A quiet tree, a slow orbit, and a little breathing room.</div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+<script src="{{ '/assets/js/zen_scene.js' | relative_url }}"></script>
+
+<style>
+.zen-page {
+    position: relative;
+    min-height: calc(100vh - 5rem);
+    overflow: hidden;
+}
+
+.zen-scene {
+    width: 100%;
+    height: calc(100vh - 5rem);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.28), rgba(255,255,255,0) 35%),
+        linear-gradient(180deg, #bcdcff 0%, #d8ebff 36%, #edf6ff 68%, #f5f7fb 100%);
+}
+
+:root[data-theme="dark"] .zen-scene {
+    background:
+        radial-gradient(circle at 50% 18%, rgba(120, 170, 255, 0.18), rgba(120, 170, 255, 0) 35%),
+        linear-gradient(180deg, #0d1726 0%, #12243a 36%, #18314d 68%, #111722 100%);
+}
+
+.zen-overlay {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    z-index: 2;
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    background: rgba(var(--color-surface-rgb), 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.zen-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--color-text);
+}
+
+.zen-subtitle {
+    margin-top: 0.35rem;
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    max-width: 320px;
+}
+
+@media (max-width: 768px) {
+    .zen-overlay {
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        padding: 0.9rem 1rem;
+    }
+
+    .zen-scene {
+        height: calc(100vh - 5rem);
+    }
+}
+</style>
