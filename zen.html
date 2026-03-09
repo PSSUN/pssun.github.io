@@ -13,8 +13,52 @@ container_class: container-fluid px-0
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
-<script src="{{ '/assets/js/zen_scene.js' | relative_url }}"></script>
+<script>
+(function () {
+    const sources = [
+        'https://unpkg.com/three@0.158.0/build/three.min.js',
+        'https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js'
+    ];
+    const zenScriptUrl = '{{ "/assets/js/zen_scene.js" | relative_url }}';
+
+    function loadScript(src, onLoad, onError) {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = onLoad;
+        script.onerror = onError;
+        document.body.appendChild(script);
+    }
+
+    function loadZenScene() {
+        loadScript(zenScriptUrl, function () {}, function () {
+            const mount = document.getElementById('zen-scene');
+            if (mount) {
+                mount.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--color-text-muted);font-size:0.95rem;">Zen scene script failed to load.</div>';
+            }
+        });
+    }
+
+    function tryLoadThree(index) {
+        if (index >= sources.length) {
+            loadZenScene();
+            return;
+        }
+
+        loadScript(sources[index], function () {
+            loadZenScene();
+        }, function () {
+            tryLoadThree(index + 1);
+        });
+    }
+
+    if (window.THREE) {
+        loadZenScene();
+    } else {
+        tryLoadThree(0);
+    }
+})();
+</script>
 
 <style>
 .zen-page {
