@@ -169,7 +169,7 @@
     });
 
     const ground = new THREE.Mesh(
-        new THREE.CylinderGeometry(12, 12, 0.5, 32),
+        new THREE.CylinderGeometry(20, 20, 0.5, 32),
         groundMaterial
     );
     ground.position.set(0, -0.25, 0);
