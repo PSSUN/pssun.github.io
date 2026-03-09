@@ -103,18 +103,6 @@
     hillDetail.receiveShadow = true;
     scene.add(hillDetail);
 
-    const path = new THREE.Mesh(
-        new THREE.RingGeometry(0.66, 1.95, 72, 1, Math.PI * 0.18, Math.PI * 1.2),
-        new THREE.MeshStandardMaterial({
-            color: darkMode ? 0x6a5d4b : 0xcdb694,
-            roughness: 1
-        })
-    );
-    path.rotation.x = -Math.PI / 2;
-    path.position.set(-0.16, -0.16, 0.42);
-    path.receiveShadow = true;
-    scene.add(path);
-
     const trunkMaterial = new THREE.MeshStandardMaterial({
         color: darkMode ? 0x704d34 : 0x8b5c36,
         roughness: 0.98
@@ -190,24 +178,6 @@
         createLeafCluster(0.75, 1, canopyPalette[1], new THREE.Vector3(-0.48, 3.05, 0.22), new THREE.Vector3(0.85, 0.75, 0.80), new THREE.Euler(0.10, -0.14, -0.06))
     ];
 
-    const flowerColors = darkMode ? [0xbfd0ff, 0xded6ff, 0x9ad6ff, 0xd8e6ff] : [0xffd3df, 0xe2d6ff, 0xfff0a8, 0xd9efff];
-    const flowerGroup = new THREE.Group();
-    scene.add(flowerGroup);
-    for (let i = 0; i < 28; i++) {
-        const petal = new THREE.Mesh(
-            new THREE.SphereGeometry(0.028 + Math.random() * 0.018, 8, 8),
-            new THREE.MeshStandardMaterial({
-                color: flowerColors[i % flowerColors.length],
-                emissive: darkMode ? 0x101628 : 0x000000,
-                roughness: 0.9
-            })
-        );
-        const angle = Math.random() * Math.PI * 2;
-        const radius = 1.5 + Math.random() * 1.5;
-        petal.position.set(Math.cos(angle) * radius, -0.15 + Math.random() * 0.08, Math.sin(angle) * radius);
-        flowerGroup.add(petal);
-    }
-
     const stoneMaterial = new THREE.MeshStandardMaterial({
         color: darkMode ? 0x616b78 : 0xb7bec8,
         roughness: 1
@@ -266,10 +236,6 @@
             blob.rotation.z = sway * (0.35 + index * 0.03);
             blob.rotation.x = Math.cos(t * 0.32 + index) * 0.012;
             blob.position.y += Math.sin(t * 0.75 + index * 0.6) * 0.0005;
-        });
-
-        flowerGroup.children.forEach((flower, index) => {
-            flower.position.y += Math.sin(t * 1.2 + index * 0.7) * 0.00025;
         });
 
         stars.forEach((star, index) => {
