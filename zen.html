@@ -7,6 +7,7 @@ navbar_title: Zen
 <div class="zen-page">
     <div id="zen-scene" class="zen-scene"></div>
     <div id="pomodoro-widget" class="pomodoro-widget" aria-label="Pomodoro timer">
+        <div id="pomodoro-now" class="pomodoro-now" aria-live="polite"></div>
         <div id="pomodoro-time" class="pomodoro-time">25:00</div>
         <div class="pomodoro-controls">
             <button id="pomodoro-start" class="pomodoro-btn" type="button">Start</button>
@@ -74,6 +75,17 @@ navbar_title: Zen
     margin-bottom: 0.6rem;
 }
 
+.pomodoro-now {
+    font-size: 0.78rem;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: var(--color-text-muted);
+    margin-bottom: 0.5rem;
+    font-variant-numeric: tabular-nums;
+}
+
 .pomodoro-controls {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -134,14 +146,16 @@ navbar_title: Zen
 <script>
 (function () {
     const DURATION_SECONDS = 25 * 60;
+    const nowEl = document.getElementById('pomodoro-now');
     const timeEl = document.getElementById('pomodoro-time');
     const startBtn = document.getElementById('pomodoro-start');
     const resetBtn = document.getElementById('pomodoro-reset');
 
-    if (!timeEl || !startBtn || !resetBtn) return;
+    if (!nowEl || !timeEl || !startBtn || !resetBtn) return;
 
     let remaining = DURATION_SECONDS;
     let timerId = null;
+    let clockTimerId = null;
 
     function formatTime(totalSeconds) {
         const mins = Math.floor(totalSeconds / 60);
@@ -153,12 +167,33 @@ navbar_title: Zen
         timeEl.textContent = formatTime(remaining);
     }
 
+    function formatNow() {
+        return new Intl.DateTimeFormat('zh-CN', {
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).format(new Date());
+    }
+
+    function renderNow() {
+        nowEl.textContent = formatNow();
+    }
+
     function stopTimer() {
         if (timerId !== null) {
             window.clearInterval(timerId);
             timerId = null;
         }
         startBtn.textContent = 'Start';
+    }
+
+    function stopClock() {
+        if (clockTimerId !== null) {
+            window.clearInterval(clockTimerId);
+            clockTimerId = null;
+        }
     }
 
     function tick() {
@@ -196,9 +231,18 @@ navbar_title: Zen
         render();
     });
 
-    window.addEventListener('pagehide', stopTimer);
-    window.addEventListener('beforeunload', stopTimer);
+    clockTimerId = window.setInterval(renderNow, 1000);
 
+    window.addEventListener('pagehide', function () {
+        stopTimer();
+        stopClock();
+    });
+    window.addEventListener('beforeunload', function () {
+        stopTimer();
+        stopClock();
+    });
+
+    renderNow();
     render();
 })();
 </script>
