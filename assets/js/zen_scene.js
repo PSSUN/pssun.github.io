@@ -216,6 +216,37 @@
         groundGroup.add(blade);
     }
 
+    const mountainMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x1a2530 : 0x8a9cac,
+        roughness: 0.9,
+        flatShading: true,
+        transparent: true,
+        opacity: 0.85
+    });
+
+    const mountainGroup = new THREE.Group();
+    scene.add(mountainGroup);
+
+    const mountains = [
+        { x: -15, z: -25, r: 4.5, h: 3.2 },
+        { x: -8, z: -28, r: 3.8, h: 2.5 },
+        { x: 2, z: -30, r: 5.2, h: 4.0 },
+        { x: 10, z: -26, r: 3.5, h: 2.2 },
+        { x: 16, z: -24, r: 4.0, h: 2.8 },
+        { x: -20, z: -20, r: 2.8, h: 1.8 },
+        { x: 22, z: -22, r: 3.2, h: 2.0 }
+    ];
+
+    mountains.forEach((m) => {
+        const mountain = new THREE.Mesh(
+            new THREE.ConeGeometry(m.r, m.h, 7),
+            mountainMaterial
+        );
+        mountain.position.set(m.x, m.h * 0.5 - 0.5, m.z);
+        mountain.rotation.y = Math.random() * Math.PI;
+        mountainGroup.add(mountain);
+    });
+
     const stars = [];
     if (darkMode) {
         for (let i = 0; i < 50; i++) {
