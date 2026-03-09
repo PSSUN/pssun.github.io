@@ -13,7 +13,7 @@
             maxPixelRatio: 2
         },
         fog: {
-            dark: { color: 0x0a111b, density: 0.019 },
+            dark: { color: 0x122033, density: 0.0165 },
             light: { color: 0xf2f8ff, density: 0.013 }
         },
         camera: {
@@ -30,11 +30,11 @@
         },
         lights: {
             ambient: {
-                dark: { sky: 0x8fb0d9, ground: 0x142233, intensity: 0.62 },
+                dark: { sky: 0xabc6eb, ground: 0x1c3148, intensity: 0.78 },
                 light: { sky: 0xf6fbff, ground: 0x8eb58e, intensity: 1.08 }
             },
             sun: {
-                dark: { color: 0x5d7ca8, intensity: 0.78 },
+                dark: { color: 0x87abda, intensity: 0.94 },
                 light: { color: 0xfff6db, intensity: 1.35 },
                 position: { x: 5, y: 8, z: 3 },
                 shadow: {
@@ -47,6 +47,11 @@
                     top: 8,
                     bottom: -8
                 }
+            },
+            moon: {
+                color: 0xcfe3ff,
+                intensity: 0.34,
+                position: { x: -6, y: 7.5, z: -4 }
             }
         },
         animation: {
@@ -200,6 +205,14 @@
             driftZRange: 0.16,
             minDriftY: 0.012,
             driftYRange: 0.018
+        },
+        moon: {
+            radius: 0.28,
+            widthSegments: 18,
+            heightSegments: 18,
+            position: { x: -6.4, y: 6.2, z: -8.6 },
+            opacity: 0.92,
+            color: 0xf0f6ff
         }
     };
 
@@ -307,7 +320,12 @@
         rock: trackGeometry(new THREE.DodecahedronGeometry(1, 0)),
         mountainPeak: trackGeometry(new THREE.ConeGeometry(1, 1, GROUND_CONFIG.mountainSegments)),
         star: trackGeometry(new THREE.SphereGeometry(1, 6, 6)),
-        cloudPuff: trackGeometry(new THREE.SphereGeometry(1, 12, 12))
+        cloudPuff: trackGeometry(new THREE.SphereGeometry(1, 12, 12)),
+        moon: trackGeometry(new THREE.SphereGeometry(
+            SKY_CONFIG.moon.radius,
+            SKY_CONFIG.moon.widthSegments,
+            SKY_CONFIG.moon.heightSegments
+        ))
     };
 
     const sharedMaterials = {
@@ -357,6 +375,11 @@
             color: SKY_CONFIG.stars.color,
             transparent: true,
             opacity: SKY_CONFIG.stars.materialOpacity
+        }),
+        moon: createBasicMaterial({
+            color: SKY_CONFIG.moon.color,
+            transparent: true,
+            opacity: SKY_CONFIG.moon.opacity
         }),
         cloudTop: createStandardMaterial({
             color: initialTheme.cloudTop,
@@ -420,12 +443,32 @@
     sunLight.shadow.camera.bottom = SCENE_CONFIG.lights.sun.shadow.bottom;
     scene.add(sunLight);
 
+    const moonLight = new THREE.DirectionalLight(
+        SCENE_CONFIG.lights.moon.color,
+        currentThemeKey === 'dark' ? SCENE_CONFIG.lights.moon.intensity : 0
+    );
+    moonLight.position.set(
+        SCENE_CONFIG.lights.moon.position.x,
+        SCENE_CONFIG.lights.moon.position.y,
+        SCENE_CONFIG.lights.moon.position.z
+    );
+    scene.add(moonLight);
+
     const treeGroup = new THREE.Group();
     const groundGroup = new THREE.Group();
     const mountainGroup = new THREE.Group();
     scene.add(treeGroup);
     scene.add(groundGroup);
     scene.add(mountainGroup);
+
+    const moon = new THREE.Mesh(sharedGeometries.moon, sharedMaterials.moon);
+    moon.position.set(
+        SKY_CONFIG.moon.position.x,
+        SKY_CONFIG.moon.position.y,
+        SKY_CONFIG.moon.position.z
+    );
+    moon.visible = currentThemeKey === 'dark';
+    scene.add(moon);
 
     const pineLayerMeshes = Array.from({ length: TREE_CONFIG.layers.length }, function () {
         return [];
@@ -679,6 +722,8 @@
 
         const darkTheme = nextThemeKey === 'dark';
         const activeGrassCount = darkTheme ? GROUND_CONFIG.grass.darkCount : GROUND_CONFIG.grass.lightCount;
+        moon.visible = darkTheme;
+        moonLight.intensity = darkTheme ? SCENE_CONFIG.lights.moon.intensity : 0;
 
         stars.forEach(function (star) {
             star.visible = darkTheme;
