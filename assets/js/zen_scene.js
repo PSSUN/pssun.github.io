@@ -234,12 +234,15 @@
         };
     }
 
-    const darkMode = document.documentElement.getAttribute('data-theme') === 'dark';
-    const themeKey = darkMode ? 'dark' : 'light';
-    const theme = THEME_CONFIG[themeKey];
-    const fogConfig = SCENE_CONFIG.fog[themeKey];
-    const ambientConfig = SCENE_CONFIG.lights.ambient[themeKey];
-    const sunConfig = SCENE_CONFIG.lights.sun[themeKey];
+    function resolveThemeKey() {
+        return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    let currentThemeKey = resolveThemeKey();
+    const initialTheme = THEME_CONFIG[currentThemeKey];
+    const initialFogConfig = SCENE_CONFIG.fog[currentThemeKey];
+    const initialAmbientConfig = SCENE_CONFIG.lights.ambient[currentThemeKey];
+    const initialSunConfig = SCENE_CONFIG.lights.sun[currentThemeKey];
     let { width, height } = getViewportSize();
 
     let renderer;
@@ -303,39 +306,39 @@
 
     const sharedMaterials = {
         trunk: createStandardMaterial({
-            color: theme.trunk,
+            color: initialTheme.trunk,
             roughness: 0.95
         }),
         foliage: createStandardMaterial({
-            color: theme.foliage,
+            color: initialTheme.foliage,
             roughness: 0.9,
             flatShading: true
         }),
         foliageLight: createStandardMaterial({
-            color: theme.foliageLight,
+            color: initialTheme.foliageLight,
             roughness: 0.9,
             flatShading: true
         }),
         ground: createStandardMaterial({
-            color: theme.ground,
+            color: initialTheme.ground,
             roughness: 1
         }),
         stone: createStandardMaterial({
-            color: theme.stone,
+            color: initialTheme.stone,
             roughness: 0.9
         }),
         grass: createStandardMaterial({
-            color: theme.grass,
+            color: initialTheme.grass,
             roughness: 0.95,
             flatShading: true
         }),
         grassLight: createStandardMaterial({
-            color: theme.grassLight,
+            color: initialTheme.grassLight,
             roughness: 0.95,
             flatShading: true
         }),
         mountain: createStandardMaterial({
-            color: theme.mountain,
+            color: initialTheme.mountain,
             roughness: 0.9,
             flatShading: true
         }),
@@ -345,7 +348,7 @@
             opacity: SKY_CONFIG.stars.materialOpacity
         }),
         cloudTop: createStandardMaterial({
-            color: theme.cloudTop,
+            color: initialTheme.cloudTop,
             roughness: 1,
             transparent: true,
             opacity: 0.84,
@@ -353,7 +356,7 @@
             side: THREE.DoubleSide
         }),
         cloudBase: createStandardMaterial({
-            color: theme.cloudBase,
+            color: initialTheme.cloudBase,
             roughness: 1,
             transparent: true,
             opacity: 0.76,
@@ -363,7 +366,7 @@
     };
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(fogConfig.color, fogConfig.density);
+    scene.fog = new THREE.FogExp2(initialFogConfig.color, initialFogConfig.density);
 
     const camera = new THREE.PerspectiveCamera(
         SCENE_CONFIG.camera.fov,
@@ -383,13 +386,13 @@
     );
 
     const ambientLight = new THREE.HemisphereLight(
-        ambientConfig.sky,
-        ambientConfig.ground,
-        ambientConfig.intensity
+        initialAmbientConfig.sky,
+        initialAmbientConfig.ground,
+        initialAmbientConfig.intensity
     );
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(sunConfig.color, sunConfig.intensity);
+    const sunLight = new THREE.DirectionalLight(initialSunConfig.color, initialSunConfig.intensity);
     sunLight.position.set(
         SCENE_CONFIG.lights.sun.position.x,
         SCENE_CONFIG.lights.sun.position.y,
@@ -517,8 +520,9 @@
         groundGroup.add(mesh);
     });
 
-    const grassCount = darkMode ? GROUND_CONFIG.grass.darkCount : GROUND_CONFIG.grass.lightCount;
-    for (let i = 0; i < grassCount; i++) {
+    const grassBlades = [];
+    const maxGrassCount = Math.max(GROUND_CONFIG.grass.darkCount, GROUND_CONFIG.grass.lightCount);
+    for (let i = 0; i < maxGrassCount; i++) {
         const theta = Math.random() * Math.PI * 2;
         const radius = GROUND_CONFIG.grass.minRadius + Math.random() * GROUND_CONFIG.grass.radiusSpread;
         const x = Math.cos(theta) * radius + (Math.random() - 0.5) * GROUND_CONFIG.grass.jitter;
@@ -534,6 +538,7 @@
         blade.rotation.y = Math.random() * Math.PI;
         setCommonMeshFlags(blade, false, true);
         groundGroup.add(blade);
+        grassBlades.push(blade);
     }
 
     GROUND_CONFIG.mountains.forEach(function (mountain) {
@@ -550,86 +555,128 @@
     });
 
     const stars = [];
-    if (darkMode) {
-        for (let i = 0; i < SKY_CONFIG.stars.count; i++) {
-            const star = new THREE.Mesh(sharedGeometries.star, sharedMaterials.star);
-            const theta = Math.random() * Math.PI * 2;
-            const radius = SKY_CONFIG.stars.minRadius + Math.random() * SKY_CONFIG.stars.radiusSpread;
-            const starSize = SKY_CONFIG.stars.minSize + Math.random() * SKY_CONFIG.stars.sizeSpread;
-            star.scale.setScalar(starSize);
-            star.position.set(
-                Math.cos(theta) * radius,
-                SKY_CONFIG.stars.minY + Math.random() * SKY_CONFIG.stars.ySpread,
-                Math.sin(theta) * radius
-            );
-            star.userData.baseScale = starSize;
-            star.userData.phase = Math.random() * Math.PI * 2;
-            star.userData.speed = SKY_CONFIG.stars.minSpeed + Math.random() * SKY_CONFIG.stars.speedSpread;
-            scene.add(star);
-            stars.push(star);
-        }
+    for (let i = 0; i < SKY_CONFIG.stars.count; i++) {
+        const star = new THREE.Mesh(sharedGeometries.star, sharedMaterials.star);
+        const theta = Math.random() * Math.PI * 2;
+        const radius = SKY_CONFIG.stars.minRadius + Math.random() * SKY_CONFIG.stars.radiusSpread;
+        const starSize = SKY_CONFIG.stars.minSize + Math.random() * SKY_CONFIG.stars.sizeSpread;
+        star.scale.setScalar(starSize);
+        star.position.set(
+            Math.cos(theta) * radius,
+            SKY_CONFIG.stars.minY + Math.random() * SKY_CONFIG.stars.ySpread,
+            Math.sin(theta) * radius
+        );
+        star.userData.baseScale = starSize;
+        star.userData.phase = Math.random() * Math.PI * 2;
+        star.userData.speed = SKY_CONFIG.stars.minSpeed + Math.random() * SKY_CONFIG.stars.speedSpread;
+        scene.add(star);
+        stars.push(star);
     }
 
     const clouds = [];
-    if (!darkMode) {
-        for (let i = 0; i < SKY_CONFIG.clouds.count; i++) {
-            const cloud = new THREE.Group();
-            const puffCount = SKY_CONFIG.clouds.minPuffs + Math.floor(Math.random() * SKY_CONFIG.clouds.puffSpread);
-            const spreadX = SKY_CONFIG.clouds.minSpreadX + Math.random() * SKY_CONFIG.clouds.spreadXRange;
-            const spreadZ = SKY_CONFIG.clouds.minSpreadZ + Math.random() * SKY_CONFIG.clouds.spreadZRange;
-            const capLift = SKY_CONFIG.clouds.minCapLift + Math.random() * SKY_CONFIG.clouds.capLiftRange;
+    for (let i = 0; i < SKY_CONFIG.clouds.count; i++) {
+        const cloud = new THREE.Group();
+        const puffCount = SKY_CONFIG.clouds.minPuffs + Math.floor(Math.random() * SKY_CONFIG.clouds.puffSpread);
+        const spreadX = SKY_CONFIG.clouds.minSpreadX + Math.random() * SKY_CONFIG.clouds.spreadXRange;
+        const spreadZ = SKY_CONFIG.clouds.minSpreadZ + Math.random() * SKY_CONFIG.clouds.spreadZRange;
+        const capLift = SKY_CONFIG.clouds.minCapLift + Math.random() * SKY_CONFIG.clouds.capLiftRange;
 
-            for (let j = 0; j < puffCount; j++) {
-                const angle = Math.random() * Math.PI * 2;
-                const ring = SKY_CONFIG.clouds.minRing + Math.pow(Math.random(), 0.75) * SKY_CONFIG.clouds.ringRange;
-                const x = Math.cos(angle) * ring * spreadX;
-                const z = Math.sin(angle) * ring * spreadZ;
-                const edge = Math.max(0, 1 - Math.sqrt((x * x) / (spreadX * spreadX) + (z * z) / (spreadZ * spreadZ)));
-                const y = (Math.random() + SKY_CONFIG.clouds.baseYOffset) * SKY_CONFIG.clouds.yRandomness + edge * capLift;
-                const size = SKY_CONFIG.clouds.minSize + Math.random() * SKY_CONFIG.clouds.sizeSpread + edge * SKY_CONFIG.clouds.edgeSizeBoost;
+        for (let j = 0; j < puffCount; j++) {
+            const angle = Math.random() * Math.PI * 2;
+            const ring = SKY_CONFIG.clouds.minRing + Math.pow(Math.random(), 0.75) * SKY_CONFIG.clouds.ringRange;
+            const x = Math.cos(angle) * ring * spreadX;
+            const z = Math.sin(angle) * ring * spreadZ;
+            const edge = Math.max(0, 1 - Math.sqrt((x * x) / (spreadX * spreadX) + (z * z) / (spreadZ * spreadZ)));
+            const y = (Math.random() + SKY_CONFIG.clouds.baseYOffset) * SKY_CONFIG.clouds.yRandomness + edge * capLift;
+            const size = SKY_CONFIG.clouds.minSize + Math.random() * SKY_CONFIG.clouds.sizeSpread + edge * SKY_CONFIG.clouds.edgeSizeBoost;
 
-                const puffMesh = new THREE.Mesh(
-                    sharedGeometries.cloudPuff,
-                    y > 0.03 ? sharedMaterials.cloudTop : sharedMaterials.cloudBase
-                );
-                puffMesh.position.set(x, y, z);
-                puffMesh.scale.set(
-                    size * (SKY_CONFIG.clouds.scaleXBase + Math.random() * SKY_CONFIG.clouds.scaleXRange),
-                    size * (SKY_CONFIG.clouds.scaleYBase + Math.random() * SKY_CONFIG.clouds.scaleYRange),
-                    size * (SKY_CONFIG.clouds.scaleZBase + Math.random() * SKY_CONFIG.clouds.scaleZRange)
-                );
-                setCommonMeshFlags(puffMesh, false, false);
-                cloud.add(puffMesh);
-            }
-
-            const theta = Math.random() * Math.PI * 2;
-            const radiusX = SKY_CONFIG.clouds.minRadiusX + Math.random() * SKY_CONFIG.clouds.radiusXRange;
-            const radiusZ = SKY_CONFIG.clouds.minRadiusZ + Math.random() * SKY_CONFIG.clouds.radiusZRange;
-            const baseX = Math.cos(theta) * radiusX;
-            const baseZ = Math.sin(theta) * radiusZ;
-            const baseY = SKY_CONFIG.clouds.minBaseY + Math.random() * SKY_CONFIG.clouds.baseYRange;
-
-            cloud.position.set(baseX, baseY, baseZ);
-            cloud.rotation.y = Math.random() * Math.PI;
-            cloud.scale.setScalar(SKY_CONFIG.clouds.minScale + Math.random() * SKY_CONFIG.clouds.scaleRange);
-            cloud.userData.baseX = baseX;
-            cloud.userData.baseY = baseY;
-            cloud.userData.baseZ = baseZ;
-            cloud.userData.phase = Math.random() * Math.PI * 2;
-            cloud.userData.speed = SKY_CONFIG.clouds.minSpeed + Math.random() * SKY_CONFIG.clouds.speedRange;
-            cloud.userData.driftX = SKY_CONFIG.clouds.minDriftX + Math.random() * SKY_CONFIG.clouds.driftXRange;
-            cloud.userData.driftZ = SKY_CONFIG.clouds.minDriftZ + Math.random() * SKY_CONFIG.clouds.driftZRange;
-            cloud.userData.driftY = SKY_CONFIG.clouds.minDriftY + Math.random() * SKY_CONFIG.clouds.driftYRange;
-
-            scene.add(cloud);
-            clouds.push(cloud);
+            const puffMesh = new THREE.Mesh(
+                sharedGeometries.cloudPuff,
+                y > 0.03 ? sharedMaterials.cloudTop : sharedMaterials.cloudBase
+            );
+            puffMesh.position.set(x, y, z);
+            puffMesh.scale.set(
+                size * (SKY_CONFIG.clouds.scaleXBase + Math.random() * SKY_CONFIG.clouds.scaleXRange),
+                size * (SKY_CONFIG.clouds.scaleYBase + Math.random() * SKY_CONFIG.clouds.scaleYRange),
+                size * (SKY_CONFIG.clouds.scaleZBase + Math.random() * SKY_CONFIG.clouds.scaleZRange)
+            );
+            setCommonMeshFlags(puffMesh, false, false);
+            cloud.add(puffMesh);
         }
+
+        const theta = Math.random() * Math.PI * 2;
+        const radiusX = SKY_CONFIG.clouds.minRadiusX + Math.random() * SKY_CONFIG.clouds.radiusXRange;
+        const radiusZ = SKY_CONFIG.clouds.minRadiusZ + Math.random() * SKY_CONFIG.clouds.radiusZRange;
+        const baseX = Math.cos(theta) * radiusX;
+        const baseZ = Math.sin(theta) * radiusZ;
+        const baseY = SKY_CONFIG.clouds.minBaseY + Math.random() * SKY_CONFIG.clouds.baseYRange;
+
+        cloud.position.set(baseX, baseY, baseZ);
+        cloud.rotation.y = Math.random() * Math.PI;
+        cloud.scale.setScalar(SKY_CONFIG.clouds.minScale + Math.random() * SKY_CONFIG.clouds.scaleRange);
+        cloud.userData.baseX = baseX;
+        cloud.userData.baseY = baseY;
+        cloud.userData.baseZ = baseZ;
+        cloud.userData.phase = Math.random() * Math.PI * 2;
+        cloud.userData.speed = SKY_CONFIG.clouds.minSpeed + Math.random() * SKY_CONFIG.clouds.speedRange;
+        cloud.userData.driftX = SKY_CONFIG.clouds.minDriftX + Math.random() * SKY_CONFIG.clouds.driftXRange;
+        cloud.userData.driftZ = SKY_CONFIG.clouds.minDriftZ + Math.random() * SKY_CONFIG.clouds.driftZRange;
+        cloud.userData.driftY = SKY_CONFIG.clouds.minDriftY + Math.random() * SKY_CONFIG.clouds.driftYRange;
+
+        scene.add(cloud);
+        clouds.push(cloud);
     }
+
+    function applyTheme(nextThemeKey) {
+        const nextTheme = THEME_CONFIG[nextThemeKey];
+        const nextFogConfig = SCENE_CONFIG.fog[nextThemeKey];
+        const nextAmbientConfig = SCENE_CONFIG.lights.ambient[nextThemeKey];
+        const nextSunConfig = SCENE_CONFIG.lights.sun[nextThemeKey];
+
+        scene.fog.color.setHex(nextFogConfig.color);
+        scene.fog.density = nextFogConfig.density;
+
+        ambientLight.color.setHex(nextAmbientConfig.sky);
+        ambientLight.groundColor.setHex(nextAmbientConfig.ground);
+        ambientLight.intensity = nextAmbientConfig.intensity;
+
+        sunLight.color.setHex(nextSunConfig.color);
+        sunLight.intensity = nextSunConfig.intensity;
+
+        sharedMaterials.trunk.color.setHex(nextTheme.trunk);
+        sharedMaterials.foliage.color.setHex(nextTheme.foliage);
+        sharedMaterials.foliageLight.color.setHex(nextTheme.foliageLight);
+        sharedMaterials.ground.color.setHex(nextTheme.ground);
+        sharedMaterials.stone.color.setHex(nextTheme.stone);
+        sharedMaterials.grass.color.setHex(nextTheme.grass);
+        sharedMaterials.grassLight.color.setHex(nextTheme.grassLight);
+        sharedMaterials.mountain.color.setHex(nextTheme.mountain);
+        sharedMaterials.cloudTop.color.setHex(nextTheme.cloudTop);
+        sharedMaterials.cloudBase.color.setHex(nextTheme.cloudBase);
+
+        const darkTheme = nextThemeKey === 'dark';
+        const activeGrassCount = darkTheme ? GROUND_CONFIG.grass.darkCount : GROUND_CONFIG.grass.lightCount;
+
+        stars.forEach(function (star) {
+            star.visible = darkTheme;
+        });
+        clouds.forEach(function (cloud) {
+            cloud.visible = !darkTheme;
+        });
+        grassBlades.forEach(function (blade, index) {
+            blade.visible = index < activeGrassCount;
+        });
+
+        currentThemeKey = nextThemeKey;
+    }
+
+    applyTheme(currentThemeKey);
 
     const clock = new THREE.Clock();
     let animationFrameId = 0;
     let resizeFrameId = 0;
     let cleanedUp = false;
+    let themeObserver = null;
 
     function animate() {
         if (cleanedUp || !mount.isConnected) {
@@ -710,6 +757,10 @@
         window.removeEventListener('resize', handleResize);
         window.removeEventListener('pagehide', cleanup);
         window.removeEventListener('beforeunload', cleanup);
+        if (themeObserver) {
+            themeObserver.disconnect();
+            themeObserver = null;
+        }
 
         disposableMaterials.forEach(function (material) {
             material.dispose();
@@ -727,6 +778,23 @@
     window.addEventListener('resize', handleResize);
     window.addEventListener('pagehide', cleanup);
     window.addEventListener('beforeunload', cleanup);
+
+    themeObserver = new MutationObserver(function (mutations) {
+        if (cleanedUp) return;
+        for (let i = 0; i < mutations.length; i++) {
+            if (mutations[i].attributeName === 'data-theme') {
+                const nextThemeKey = resolveThemeKey();
+                if (nextThemeKey !== currentThemeKey) {
+                    applyTheme(nextThemeKey);
+                }
+                break;
+            }
+        }
+    });
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+    });
 
     animate();
 })();
