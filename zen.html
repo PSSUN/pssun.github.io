@@ -6,6 +6,7 @@ navbar_title: Zen
 
 <div class="zen-page">
     <div id="zen-scene" class="zen-scene"></div>
+    <div id="zen-quote" class="zen-quote" aria-live="polite"></div>
 </div>
 
 <script src="{{ '/assets/js/vendor/three.min.js' | relative_url }}"></script>
@@ -35,7 +36,45 @@ navbar_title: Zen
         linear-gradient(180deg, #0d1726 0%, #12243a 36%, #18314d 68%, #111722 100%);
 }
 
+.zen-quote {
+    position: absolute;
+    top: 13%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    max-width: min(680px, calc(100% - 3rem));
+    padding: 0.85rem 1.2rem;
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--color-text);
+    background: rgba(var(--color-surface-rgb), 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+    text-wrap: balance;
+    pointer-events: none;
+}
+
+:root[data-theme="dark"] .zen-quote {
+    color: #eef4ff;
+    background: rgba(17, 26, 38, 0.34);
+    border-color: rgba(167, 196, 255, 0.16);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+}
+
 @media (max-width: 768px) {
+    .zen-quote {
+        top: 10%;
+        max-width: calc(100% - 1.5rem);
+        padding: 0.8rem 1rem;
+        font-size: 0.96rem;
+        line-height: 1.5;
+        border-radius: 24px;
+    }
     .zen-scene {
         height: calc(100vh - 5rem);
     }
