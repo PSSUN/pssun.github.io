@@ -6,6 +6,13 @@ navbar_title: Zen
 
 <div class="zen-page">
     <div id="zen-scene" class="zen-scene"></div>
+    <div id="pomodoro-widget" class="pomodoro-widget" aria-label="Pomodoro timer">
+        <div id="pomodoro-time" class="pomodoro-time">25:00</div>
+        <div class="pomodoro-controls">
+            <button id="pomodoro-start" class="pomodoro-btn" type="button">Start</button>
+            <button id="pomodoro-reset" class="pomodoro-btn" type="button">Reset</button>
+        </div>
+    </div>
 </div>
 
 <script src="{{ '/assets/js/vendor/three.min.js' | relative_url }}"></script>
@@ -41,6 +48,66 @@ navbar_title: Zen
         linear-gradient(180deg, #0d1726 0%, #12243a 36%, #18314d 68%, #111722 100%);
 }
 
+.pomodoro-widget {
+    position: fixed;
+    right: 1.1rem;
+    bottom: 1.1rem;
+    z-index: 180;
+    width: 10.5rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: 0.8rem;
+    border: 1px solid var(--color-border);
+    background: rgba(var(--color-surface-rgb), 0.82);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.pomodoro-time {
+    font-size: 1.45rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    color: var(--color-text);
+    margin-bottom: 0.6rem;
+}
+
+.pomodoro-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+}
+
+.pomodoro-btn {
+    border: 1px solid var(--color-border);
+    border-radius: 0.45rem;
+    background: var(--color-surface-muted);
+    color: var(--color-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.33rem 0.15rem;
+    cursor: pointer;
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.pomodoro-btn:hover {
+    background: color-mix(in srgb, var(--color-surface-muted) 75%, var(--color-link) 25%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.pomodoro-btn:active {
+    transform: translateY(0);
+}
+
+@supports not (background: color-mix(in srgb, black 50%, white 50%)) {
+    .pomodoro-btn:hover {
+        background: var(--color-border);
+    }
+}
+
 @media (max-width: 768px) {
     .zen-scene {
         top: 2.5rem;
@@ -50,5 +117,88 @@ navbar_title: Zen
         width: 100vw;
         height: calc(100vh - 2.5rem);
     }
+
+    .pomodoro-widget {
+        right: 0.7rem;
+        bottom: 0.8rem;
+        width: 9.8rem;
+        padding: 0.62rem 0.72rem;
+    }
+
+    .pomodoro-time {
+        font-size: 1.28rem;
+    }
 }
 </style>
+
+<script>
+(function () {
+    const DURATION_SECONDS = 25 * 60;
+    const timeEl = document.getElementById('pomodoro-time');
+    const startBtn = document.getElementById('pomodoro-start');
+    const resetBtn = document.getElementById('pomodoro-reset');
+
+    if (!timeEl || !startBtn || !resetBtn) return;
+
+    let remaining = DURATION_SECONDS;
+    let timerId = null;
+
+    function formatTime(totalSeconds) {
+        const mins = Math.floor(totalSeconds / 60);
+        const secs = totalSeconds % 60;
+        return String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function render() {
+        timeEl.textContent = formatTime(remaining);
+    }
+
+    function stopTimer() {
+        if (timerId !== null) {
+            window.clearInterval(timerId);
+            timerId = null;
+        }
+        startBtn.textContent = 'Start';
+    }
+
+    function tick() {
+        if (remaining <= 0) {
+            stopTimer();
+            return;
+        }
+
+        remaining -= 1;
+        render();
+
+        if (remaining <= 0) {
+            stopTimer();
+        }
+    }
+
+    startBtn.addEventListener('click', function () {
+        if (timerId !== null) {
+            stopTimer();
+            return;
+        }
+
+        if (remaining <= 0) {
+            remaining = DURATION_SECONDS;
+            render();
+        }
+
+        startBtn.textContent = 'Pause';
+        timerId = window.setInterval(tick, 1000);
+    });
+
+    resetBtn.addEventListener('click', function () {
+        stopTimer();
+        remaining = DURATION_SECONDS;
+        render();
+    });
+
+    window.addEventListener('pagehide', stopTimer);
+    window.addEventListener('beforeunload', stopTimer);
+
+    render();
+})();
+</script>
