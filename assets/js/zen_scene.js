@@ -113,15 +113,15 @@
     }
 
     const pineLayers = [
-        { r: 1.8, y: 3.2, h: 1.4 },
-        { r: 1.6, y: 2.8, h: 1.3 },
-        { r: 1.4, y: 2.4, h: 1.2 },
-        { r: 1.2, y: 2.0, h: 1.1 },
-        { r: 1.0, y: 1.7, h: 1.0 },
-        { r: 0.85, y: 1.4, h: 0.9 },
-        { r: 0.7, y: 1.1, h: 0.8 },
+        { r: 0.4, y: 0.65, h: 0.5 },
         { r: 0.55, y: 0.85, h: 0.7 },
-        { r: 0.4, y: 0.65, h: 0.5 }
+        { r: 0.7, y: 1.1, h: 0.8 },
+        { r: 0.85, y: 1.4, h: 0.9 },
+        { r: 1.0, y: 1.7, h: 1.0 },
+        { r: 1.2, y: 2.0, h: 1.1 },
+        { r: 1.4, y: 2.4, h: 1.2 },
+        { r: 1.6, y: 2.8, h: 1.3 },
+        { r: 1.8, y: 3.2, h: 1.4 }
     ];
 
     pineLayers.forEach((layer, index) => {
@@ -213,10 +213,18 @@
         }
     }
 
+    const orbitRadius = 7;
+    const cameraTarget = new THREE.Vector3(0, 2, 0);
     const clock = new THREE.Clock();
 
     function animate() {
         const t = clock.getElapsedTime();
+        const angle = t * 0.08;
+
+        camera.position.x = Math.cos(angle) * orbitRadius;
+        camera.position.z = Math.sin(angle) * orbitRadius;
+        camera.position.y = 2.5 + Math.sin(t * 0.15) * 0.1;
+        camera.lookAt(cameraTarget);
 
         const sway = Math.sin(t * 0.4) * 0.015;
         treeGroup.rotation.z = sway;
