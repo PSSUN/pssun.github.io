@@ -5,9 +5,6 @@ navbar_title: Showcase
 container_class: container-xl
 ---
 
-<!-- Mouse Trail Container -->
-<div id="mouse-trail-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden;"></div>
-
 {% assign cards_by_group = site.showcase | sort: "date" | reverse | where: "show", true | group_by_exp: "item", "item.group" %}
 
 <div style="min-height: calc(100vh - 200px); position: relative; z-index: 1;">
@@ -37,58 +34,3 @@ container_class: container-xl
 
 </div>
 
-<script>
-// ==================== Mouse Trail Effect ====================
-(function() {
-    const container = document.getElementById('mouse-trail-container');
-    const trails = [];
-    const maxTrails = 15;
-    
-    document.addEventListener('mousemove', (e) => {
-        createTrail(e.clientX, e.clientY);
-    });
-    
-    function createTrail(x, y) {
-        const trail = document.createElement('div');
-        trail.className = 'mouse-trail';
-        trail.style.left = x + 'px';
-        trail.style.top = y + 'px';
-        
-        container.appendChild(trail);
-        trails.push(trail);
-        
-        // Remove old trails
-        if (trails.length > maxTrails) {
-            const oldTrail = trails.shift();
-            oldTrail.remove();
-        }
-        
-        // Animate and remove
-        setTimeout(() => {
-            trail.style.opacity = '0';
-            trail.style.transform = 'translate(-50%, -50%) scale(2)';
-        }, 10);
-        
-        setTimeout(() => {
-            trail.remove();
-            const index = trails.indexOf(trail);
-            if (index > -1) trails.splice(index, 1);
-        }, 800);
-    }
-})();
-</script>
-
-<style>
-.mouse-trail {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(100, 150, 255, 0.6) 0%, rgba(100, 150, 255, 0) 70%);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    opacity: 1;
-    box-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
-}
-</style>
