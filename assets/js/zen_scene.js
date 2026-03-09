@@ -137,11 +137,7 @@
             { x: -20, z: -20, r: 2.8, h: 1.8 },
             { x: 22, z: -22, r: 3.2, h: 2.0 }
         ],
-        mountainBaseHeight: 1.5,
-        mountainBaseTopScale: 0.7,
-        mountainBaseBottomScale: 0.9,
-        mountainPositionY: -0.5,
-        mountainBaseY: -0.25,
+        mountainPositionY: -1.2,
         mountainSegments: 7
     };
 
@@ -301,7 +297,6 @@
         ground: trackGeometry(new THREE.CylinderGeometry(1, 1, 1, GROUND_CONFIG.ground.radialSegments)),
         rock: trackGeometry(new THREE.DodecahedronGeometry(1, 0)),
         mountainPeak: trackGeometry(new THREE.ConeGeometry(1, 1, GROUND_CONFIG.mountainSegments)),
-        mountainBase: trackGeometry(new THREE.CylinderGeometry(1, 1, 1, GROUND_CONFIG.mountainSegments)),
         star: trackGeometry(new THREE.SphereGeometry(1, 6, 6)),
         cloudPuff: trackGeometry(new THREE.SphereGeometry(1, 12, 12))
     };
@@ -548,15 +543,6 @@
         peak.scale.set(mountain.r, mountain.h, mountain.r);
         peak.position.y = mountain.h * 0.5;
         singleMountainGroup.add(peak);
-
-        const base = new THREE.Mesh(sharedGeometries.mountainBase, sharedMaterials.mountain);
-        base.scale.set(
-            mountain.r * GROUND_CONFIG.mountainBaseBottomScale,
-            GROUND_CONFIG.mountainBaseHeight,
-            mountain.r * GROUND_CONFIG.mountainBaseTopScale
-        );
-        base.position.y = GROUND_CONFIG.mountainBaseY;
-        singleMountainGroup.add(base);
 
         singleMountainGroup.position.set(mountain.x, GROUND_CONFIG.mountainPositionY, mountain.z);
         singleMountainGroup.rotation.y = Math.random() * Math.PI;
