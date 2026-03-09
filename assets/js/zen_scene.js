@@ -139,9 +139,9 @@
         ],
         mountainPositionY: -1.2,
         mountainSegments: 7,
-        snowCapHeightScale: 0.22,
-        snowCapRadiusScale: 0.3,
-        snowCapYOffset: 0.08
+        snowCapHeightScale: 0.12,
+        snowCapRadiusScale: 0.4,
+        snowCapYOffset: -0.02
     };
 
     const SKY_CONFIG = {
@@ -565,7 +565,7 @@
             mountain.h * GROUND_CONFIG.snowCapHeightScale,
             mountain.r * GROUND_CONFIG.snowCapRadiusScale
         );
-        snowCap.position.y = mountain.h - (mountain.h * GROUND_CONFIG.snowCapHeightScale * 0.5) + GROUND_CONFIG.snowCapYOffset;
+        snowCap.position.y = mountain.h - (mountain.h * GROUND_CONFIG.snowCapHeightScale) + GROUND_CONFIG.snowCapYOffset;
         singleMountainGroup.add(snowCap);
 
         singleMountainGroup.position.set(mountain.x, GROUND_CONFIG.mountainPositionY, mountain.z);
