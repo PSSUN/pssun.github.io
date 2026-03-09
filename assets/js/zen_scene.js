@@ -51,20 +51,20 @@
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(darkMode ? 0x111a26 : 0xdfefff, darkMode ? 0.018 : 0.022);
+    scene.fog = new THREE.FogExp2(darkMode ? 0x0d1420 : 0xe8f0f8, darkMode ? 0.015 : 0.018);
 
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(5.8, 1.9, 5.5);
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    camera.position.set(0, 2.5, 8);
 
     const ambientLight = new THREE.HemisphereLight(
-        darkMode ? 0xa7c4ff : 0xf4f8ff,
-        darkMode ? 0x142032 : 0x799c66,
-        darkMode ? 0.95 : 1.1
+        darkMode ? 0x8fb0d9 : 0xe8f4ff,
+        darkMode ? 0x1a2a3a : 0x5a7a5a,
+        darkMode ? 0.8 : 0.9
     );
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(darkMode ? 0x90baff : 0xfffcf5, darkMode ? 1.2 : 1.15);
-    sunLight.position.set(6, 9, 4.5);
+    const sunLight = new THREE.DirectionalLight(darkMode ? 0x7a9fd0 : 0xfff8e7, darkMode ? 1.0 : 1.1);
+    sunLight.position.set(5, 8, 3);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
     sunLight.shadow.mapSize.height = 1024;
@@ -79,167 +79,163 @@
     const treeGroup = new THREE.Group();
     scene.add(treeGroup);
 
-    const groundMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x1f3322 : 0x6f9d58,
-        roughness: 0.98,
-        metalness: 0.02
-    });
-
-    const hill = new THREE.Mesh(new THREE.SphereGeometry(4.95, 72, 72), groundMaterial);
-    hill.scale.set(1.48, 0.5, 1.48);
-    hill.position.y = -2.56;
-    hill.receiveShadow = true;
-    scene.add(hill);
-
-    const hillDetail = new THREE.Mesh(
-        new THREE.SphereGeometry(3.2, 52, 52),
-        new THREE.MeshStandardMaterial({
-            color: darkMode ? 0x29452f : 0x7cab63,
-            roughness: 1
-        })
-    );
-    hillDetail.scale.set(1.2, 0.38, 1.06);
-    hillDetail.position.set(1.12, -1.88, -0.55);
-    hillDetail.receiveShadow = true;
-    scene.add(hillDetail);
-
     const trunkMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x704d34 : 0x8b5c36,
-        roughness: 0.98
+        color: darkMode ? 0x5a4a3a : 0x8b6f4e,
+        roughness: 0.95
     });
 
-    const branchMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x765236 : 0x916345,
-        roughness: 0.98
+    const foliageMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x2d5a3d : 0x4a7c59,
+        roughness: 0.9,
+        flatShading: true
     });
 
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.32, 3.2, 20), trunkMaterial);
-    trunk.position.set(0, 0.05, 0);
-    trunk.rotation.z = 0.06;
+    const foliageLightMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x3d7a4d : 0x5a9c6a,
+        roughness: 0.9,
+        flatShading: true
+    });
+
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.28, 3.5, 12), trunkMaterial);
+    trunk.position.set(0, 1.75, 0);
     trunk.castShadow = true;
+    trunk.receiveShadow = true;
     treeGroup.add(trunk);
 
-    const trunkTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.15, 1.0, 14), branchMaterial);
-    trunkTop.position.set(0.08, 1.68, 0.02);
-    trunkTop.rotation.z = -0.15;
-    trunkTop.castShadow = true;
-    treeGroup.add(trunkTop);
-
-    function addBranch(length, radiusTop, radiusBottom, position, rotation) {
-        const branch = new THREE.Mesh(
-            new THREE.CylinderGeometry(radiusTop, radiusBottom, length, 14),
-            branchMaterial
-        );
-        branch.position.copy(position);
-        branch.rotation.set(rotation.x, rotation.y, rotation.z);
-        branch.castShadow = true;
-        treeGroup.add(branch);
-        return branch;
+    function createPineLayer(radius, y, height, taper) {
+        const geometry = new THREE.ConeGeometry(radius, height, 8);
+        const material = Math.random() > 0.5 ? foliageMaterial : foliageLightMaterial;
+        const layer = new THREE.Mesh(geometry, material);
+        layer.position.set(0, y, 0);
+        layer.castShadow = true;
+        layer.receiveShadow = true;
+        return layer;
     }
 
-    addBranch(1.65, 0.04, 0.10, new THREE.Vector3(-0.28, 1.12, 0.08), new THREE.Euler(0.42, 0.22, -0.85));
-    addBranch(1.55, 0.04, 0.09, new THREE.Vector3(0.42, 1.28, -0.08), new THREE.Euler(-0.32, -0.32, 0.95));
-    addBranch(1.18, 0.03, 0.07, new THREE.Vector3(0.08, 1.78, 0.18), new THREE.Euler(0.12, 0.38, 0.15));
-    addBranch(0.95, 0.025, 0.05, new THREE.Vector3(-0.08, 1.65, -0.15), new THREE.Euler(-0.12, 0.62, -0.15));
-
-    const canopyPalette = darkMode
-        ? [0x3f6d47, 0x4f8357, 0x659d69, 0x83bb89, 0xa1d1a6]
-        : [0x4f8b53, 0x62a860, 0x76bc74, 0x91cf8f, 0xb2e0ad];
-
-    const canopyGroup = new THREE.Group();
-    treeGroup.add(canopyGroup);
-
-    function createLeafCluster(radius, detail, color, position, scale, rotation) {
-        const material = new THREE.MeshStandardMaterial({
-            color,
-            roughness: 0.92,
-            emissive: darkMode ? 0x0c140d : 0x000000,
-            emissiveIntensity: darkMode ? 0.15 : 0,
-            flatShading: false
-        });
-        const geometry = new THREE.IcosahedronGeometry(radius, detail);
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.copy(position);
-        mesh.scale.set(scale.x, scale.y, scale.z);
-        mesh.rotation.set(rotation.x, rotation.y, rotation.z);
-        mesh.castShadow = true;
-        canopyGroup.add(mesh);
-        return mesh;
-    }
-
-    const canopyBlobs = [
-        createLeafCluster(1.35, 2, canopyPalette[1], new THREE.Vector3(-0.45, 2.45, 0.12), new THREE.Vector3(1.25, 1.35, 1.18), new THREE.Euler(0.12, 0.10, -0.06)),
-        createLeafCluster(1.42, 2, canopyPalette[2], new THREE.Vector3(0.15, 2.68, 0.08), new THREE.Vector3(1.55, 1.58, 1.45), new THREE.Euler(0.06, -0.15, 0.03)),
-        createLeafCluster(1.28, 2, canopyPalette[3], new THREE.Vector3(0.82, 2.38, -0.08), new THREE.Vector3(1.28, 1.32, 1.18), new THREE.Euler(-0.06, 0.22, 0.04)),
-        createLeafCluster(1.18, 2, canopyPalette[0], new THREE.Vector3(-0.12, 3.18, -0.06), new THREE.Vector3(1.25, 1.02, 1.12), new THREE.Euler(0.14, 0.24, 0.08)),
-        createLeafCluster(1.05, 1, canopyPalette[4], new THREE.Vector3(-0.88, 2.28, 0.06), new THREE.Vector3(1.05, 0.95, 0.92), new THREE.Euler(0.04, -0.18, -0.10)),
-        createLeafCluster(0.98, 1, canopyPalette[4], new THREE.Vector3(0.92, 2.18, -0.15), new THREE.Vector3(1.02, 0.92, 0.96), new THREE.Euler(0.08, 0.15, 0.06)),
-        createLeafCluster(0.85, 1, canopyPalette[2], new THREE.Vector3(0.38, 3.28, 0.22), new THREE.Vector3(0.88, 0.80, 0.85), new THREE.Euler(-0.12, 0.10, 0.05)),
-        createLeafCluster(0.75, 1, canopyPalette[1], new THREE.Vector3(-0.48, 3.05, 0.22), new THREE.Vector3(0.85, 0.75, 0.80), new THREE.Euler(0.10, -0.14, -0.06))
+    const pineLayers = [
+        { r: 1.8, y: 3.2, h: 1.4 },
+        { r: 1.6, y: 2.8, h: 1.3 },
+        { r: 1.4, y: 2.4, h: 1.2 },
+        { r: 1.2, y: 2.0, h: 1.1 },
+        { r: 1.0, y: 1.7, h: 1.0 },
+        { r: 0.85, y: 1.4, h: 0.9 },
+        { r: 0.7, y: 1.1, h: 0.8 },
+        { r: 0.55, y: 0.85, h: 0.7 },
+        { r: 0.4, y: 0.65, h: 0.5 }
     ];
 
-    const stoneMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x616b78 : 0xb7bec8,
+    pineLayers.forEach((layer, index) => {
+        const cone = createPineLayer(layer.r, layer.y, layer.h);
+        treeGroup.add(cone);
+
+        if (index < pineLayers.length - 1) {
+            const offset = 0.15;
+            const smallCone1 = createPineLayer(layer.r * 0.6, layer.y - 0.1, layer.h * 0.7);
+            smallCone1.position.x = offset;
+            smallCone1.rotation.z = -0.15;
+            treeGroup.add(smallCone1);
+
+            const smallCone2 = createPineLayer(layer.r * 0.6, layer.y - 0.1, layer.h * 0.7);
+            smallCone2.position.x = -offset;
+            smallCone2.rotation.z = 0.15;
+            treeGroup.add(smallCone2);
+
+            const smallCone3 = createPineLayer(layer.r * 0.5, layer.y - 0.15, layer.h * 0.6);
+            smallCone3.position.z = offset;
+            smallCone3.rotation.x = 0.15;
+            treeGroup.add(smallCone3);
+
+            const smallCone4 = createPineLayer(layer.r * 0.5, layer.y - 0.15, layer.h * 0.6);
+            smallCone4.position.z = -offset;
+            smallCone4.rotation.x = -0.15;
+            treeGroup.add(smallCone4);
+        }
+    });
+
+    const topCone = new THREE.Mesh(
+        new THREE.ConeGeometry(0.25, 0.8, 8),
+        foliageLightMaterial
+    );
+    topCone.position.set(0, 3.9, 0);
+    topCone.castShadow = true;
+    treeGroup.add(topCone);
+
+    const groundGroup = new THREE.Group();
+    scene.add(groundGroup);
+
+    const groundMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x2a3a2a : 0x6b8e5a,
         roughness: 1
     });
 
+    const ground = new THREE.Mesh(
+        new THREE.CylinderGeometry(12, 12, 0.5, 32),
+        groundMaterial
+    );
+    ground.position.set(0, -0.25, 0);
+    ground.receiveShadow = true;
+    groundGroup.add(ground);
+
+    const stoneMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x4a5560 : 0x9aa5b0,
+        roughness: 0.9
+    });
+
     [
-        { x: -1.58, y: -1.02, z: 1.18, s: 0.2 },
-        { x: 1.16, y: -1.08, z: 0.84, s: 0.15 },
-        { x: 0.65, y: -1.16, z: -1.3, s: 0.13 },
-        { x: -0.88, y: -1.12, z: -1.42, s: 0.12 }
+        { x: 2.5, z: 1.5, s: 0.25 },
+        { x: -2.2, z: 1.8, s: 0.2 },
+        { x: 1.8, z: -2.0, s: 0.18 },
+        { x: -1.5, z: -2.2, s: 0.15 },
+        { x: 3.2, z: -0.8, s: 0.12 }
     ].forEach((rock) => {
         const mesh = new THREE.Mesh(new THREE.DodecahedronGeometry(rock.s, 0), stoneMaterial);
-        mesh.position.set(rock.x, rock.y, rock.z);
+        mesh.position.set(rock.x, rock.s * 0.4, rock.z);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
-        scene.add(mesh);
+        mesh.rotation.set(Math.random() * 0.5, Math.random() * Math.PI, Math.random() * 0.5);
+        groundGroup.add(mesh);
     });
 
     const stars = [];
     if (darkMode) {
-        for (let i = 0; i < 68; i++) {
+        for (let i = 0; i < 50; i++) {
             const star = new THREE.Mesh(
-                new THREE.SphereGeometry(0.012 + Math.random() * 0.012, 8, 8),
-                new THREE.MeshBasicMaterial({ color: i % 5 === 0 ? 0xe7efff : 0xcfe0ff, transparent: true, opacity: 0.78 })
+                new THREE.SphereGeometry(0.01 + Math.random() * 0.01, 6, 6),
+                new THREE.MeshBasicMaterial({ color: 0xcfe8ff, transparent: true, opacity: 0.7 })
             );
             const theta = Math.random() * Math.PI * 2;
-            const radius = 7.5 + Math.random() * 11;
-            star.position.set(Math.cos(theta) * radius, 4.1 + Math.random() * 4.2, Math.sin(theta) * radius);
+            const radius = 8 + Math.random() * 8;
+            star.position.set(Math.cos(theta) * radius, 5 + Math.random() * 4, Math.sin(theta) * radius);
             star.userData.phase = Math.random() * Math.PI * 2;
-            star.userData.speed = 0.7 + Math.random() * 0.7;
+            star.userData.speed = 0.5 + Math.random() * 0.5;
             scene.add(star);
             stars.push(star);
         }
     }
 
-    const orbitRadius = 5.8;
-    const cameraTarget = new THREE.Vector3(0, 1.5, 0);
     const clock = new THREE.Clock();
 
     function animate() {
         const t = clock.getElapsedTime();
-        const angle = t * 0.08;
 
-        camera.position.x = Math.cos(angle) * orbitRadius;
-        camera.position.z = Math.sin(angle) * orbitRadius;
-        camera.position.y = 1.9 + Math.sin(t * 0.18) * 0.1;
-        camera.lookAt(cameraTarget);
+        const sway = Math.sin(t * 0.4) * 0.015;
+        treeGroup.rotation.z = sway;
+        treeGroup.rotation.x = Math.cos(t * 0.25) * 0.008;
 
-        const sway = Math.sin(t * 0.55) * 0.025;
-        treeGroup.rotation.z = sway * 0.18;
-        treeGroup.rotation.x = Math.cos(t * 0.28) * 0.008;
-        canopyGroup.rotation.y += 0.0007;
-
-        canopyBlobs.forEach((blob, index) => {
-            blob.rotation.y += 0.00045 + index * 0.00003;
-            blob.rotation.z = sway * (0.35 + index * 0.03);
-            blob.rotation.x = Math.cos(t * 0.32 + index) * 0.012;
-            blob.position.y += Math.sin(t * 0.75 + index * 0.6) * 0.0005;
+        pineLayers.forEach((layer, index) => {
+            const layerSway = Math.sin(t * 0.5 + index * 0.3) * 0.01 * (1 - index * 0.08);
+            treeGroup.children.forEach((child, childIndex) => {
+                if (childIndex > 1 && child.geometry && child.geometry.type === 'ConeGeometry') {
+                    const childY = child.position.y;
+                    if (Math.abs(childY - layer.y) < 0.1) {
+                        child.rotation.z = layerSway;
+                    }
+                }
+            });
         });
 
         stars.forEach((star, index) => {
-            star.material.opacity = 0.32 + (Math.sin(t * star.userData.speed + star.userData.phase + index * 0.04) + 1) * 0.18;
+            star.material.opacity = 0.3 + (Math.sin(t * star.userData.speed + star.userData.phase) + 1) * 0.2;
         });
 
         renderer.render(scene, camera);
