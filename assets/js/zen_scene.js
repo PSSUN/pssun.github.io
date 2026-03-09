@@ -15,8 +15,15 @@
         return;
     }
 
-    const width = mount.clientWidth || mount.offsetWidth || window.innerWidth;
-    const height = mount.clientHeight || mount.offsetHeight || 600;
+    function getViewportSize() {
+        const topOffset = Math.max(mount.getBoundingClientRect().top, 0);
+        return {
+            width: window.innerWidth,
+            height: Math.max(window.innerHeight - topOffset, 320)
+        };
+    }
+
+    let { width, height } = getViewportSize();
     const darkMode = document.documentElement.getAttribute('data-theme') === 'dark';
     const quoteEl = document.getElementById('zen-quote');
 
@@ -41,6 +48,9 @@
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
+    renderer.domElement.style.display = 'block';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
     if ('outputColorSpace' in renderer && THREE.SRGBColorSpace) {
         renderer.outputColorSpace = THREE.SRGBColorSpace;
     } else if ('outputEncoding' in renderer && THREE.sRGBEncoding) {
@@ -51,19 +61,19 @@
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(darkMode ? 0x0d1420 : 0xe8f0f8, darkMode ? 0.015 : 0.018);
+    scene.fog = new THREE.FogExp2(darkMode ? 0x0d1420 : 0xf2f8ff, darkMode ? 0.015 : 0.013);
 
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
-    camera.position.set(0, 2.2, 6.5);
+    camera.position.set(0, 2.7, 5.2);
 
     const ambientLight = new THREE.HemisphereLight(
-        darkMode ? 0x8fb0d9 : 0xe8f4ff,
-        darkMode ? 0x1a2a3a : 0x5a7a5a,
-        darkMode ? 0.8 : 0.9
+        darkMode ? 0x8fb0d9 : 0xf6fbff,
+        darkMode ? 0x1a2a3a : 0x8eb58e,
+        darkMode ? 0.8 : 1.08
     );
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(darkMode ? 0x7a9fd0 : 0xfff8e7, darkMode ? 1.0 : 1.1);
+    const sunLight = new THREE.DirectionalLight(darkMode ? 0x7a9fd0 : 0xfff6db, darkMode ? 1.0 : 1.35);
     sunLight.position.set(5, 8, 3);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
@@ -80,18 +90,18 @@
     scene.add(treeGroup);
 
     const trunkMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x5a4a3a : 0x8b6f4e,
+        color: darkMode ? 0x5a4a3a : 0xa88258,
         roughness: 0.95
     });
 
     const foliageMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x2d5a3d : 0x4a7c59,
+        color: darkMode ? 0x2d5a3d : 0x5f9f6f,
         roughness: 0.9,
         flatShading: true
     });
 
     const foliageLightMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x3d7a4d : 0x5a9c6a,
+        color: darkMode ? 0x3d7a4d : 0x79bf89,
         roughness: 0.9,
         flatShading: true
     });
@@ -113,39 +123,39 @@
     }
 
     const pineLayers = [
-        { r: 1.8, y: 0.65, h: 0.5 },
-        { r: 1.6, y: 0.85, h: 0.7 },
-        { r: 1.4, y: 1.1, h: 0.8 },
-        { r: 1.2, y: 1.4, h: 0.9 },
-        { r: 1.0, y: 1.7, h: 1.0 },
-        { r: 0.85, y: 2.0, h: 1.1 },
-        { r: 0.7, y: 2.4, h: 1.2 },
-        { r: 0.55, y: 2.8, h: 1.3 },
-        { r: 0.4, y: 3.2, h: 1.4 }
+        { r: 1.05, y: 1.05, h: 0.58 },
+        { r: 0.95, y: 1.3, h: 0.64 },
+        { r: 0.84, y: 1.58, h: 0.7 },
+        { r: 0.74, y: 1.88, h: 0.76 },
+        { r: 0.64, y: 2.2, h: 0.82 },
+        { r: 0.54, y: 2.52, h: 0.88 },
+        { r: 0.45, y: 2.84, h: 0.94 },
+        { r: 0.36, y: 3.16, h: 1.0 },
+        { r: 0.28, y: 3.48, h: 1.06 }
     ];
 
     pineLayers.forEach((layer, index) => {
         const cone = createPineLayer(layer.r, layer.y, layer.h);
         treeGroup.add(cone);
 
-        if (index < pineLayers.length - 1) {
-            const offset = 0.15;
-            const smallCone1 = createPineLayer(layer.r * 0.6, layer.y - 0.1, layer.h * 0.7);
+        if (index < pineLayers.length - 2) {
+            const offset = Math.max(0.08, layer.r * 0.1);
+            const smallCone1 = createPineLayer(layer.r * 0.42, layer.y - 0.06, layer.h * 0.62);
             smallCone1.position.x = offset;
             smallCone1.rotation.z = -0.15;
             treeGroup.add(smallCone1);
 
-            const smallCone2 = createPineLayer(layer.r * 0.6, layer.y - 0.1, layer.h * 0.7);
+            const smallCone2 = createPineLayer(layer.r * 0.42, layer.y - 0.06, layer.h * 0.62);
             smallCone2.position.x = -offset;
             smallCone2.rotation.z = 0.15;
             treeGroup.add(smallCone2);
 
-            const smallCone3 = createPineLayer(layer.r * 0.5, layer.y - 0.15, layer.h * 0.6);
+            const smallCone3 = createPineLayer(layer.r * 0.32, layer.y - 0.1, layer.h * 0.55);
             smallCone3.position.z = offset;
             smallCone3.rotation.x = 0.15;
             treeGroup.add(smallCone3);
 
-            const smallCone4 = createPineLayer(layer.r * 0.5, layer.y - 0.15, layer.h * 0.6);
+            const smallCone4 = createPineLayer(layer.r * 0.32, layer.y - 0.1, layer.h * 0.55);
             smallCone4.position.z = -offset;
             smallCone4.rotation.x = -0.15;
             treeGroup.add(smallCone4);
@@ -153,10 +163,10 @@
     });
 
     const topCone = new THREE.Mesh(
-        new THREE.ConeGeometry(0.25, 0.8, 8),
+        new THREE.ConeGeometry(0.18, 0.55, 8),
         foliageLightMaterial
     );
-    topCone.position.set(0, 3.9, 0);
+    topCone.position.set(0, 4.02, 0);
     topCone.castShadow = true;
     treeGroup.add(topCone);
 
@@ -164,7 +174,7 @@
     scene.add(groundGroup);
 
     const groundMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x2a3a2a : 0x6b8e5a,
+        color: darkMode ? 0x2a3a2a : 0x89be72,
         roughness: 1
     });
 
@@ -177,7 +187,7 @@
     groundGroup.add(ground);
 
     const stoneMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x4a5560 : 0x9aa5b0,
+        color: darkMode ? 0x4a5560 : 0xaeb8c2,
         roughness: 0.9
     });
 
@@ -213,8 +223,8 @@
         }
     }
 
-    const orbitRadius = 5.5;
-    const cameraTarget = new THREE.Vector3(0, 1.8, 0);
+    const orbitRadius = 4.4;
+    const cameraTarget = new THREE.Vector3(0, 2.15, 0);
     const clock = new THREE.Clock();
 
     function animate() {
@@ -223,7 +233,7 @@
 
         camera.position.x = Math.cos(angle) * orbitRadius;
         camera.position.z = Math.sin(angle) * orbitRadius;
-        camera.position.y = 2.2 + Math.sin(t * 0.15) * 0.08;
+        camera.position.y = 2.55 + Math.sin(t * 0.15) * 0.08;
         camera.lookAt(cameraTarget);
 
         const sway = Math.sin(t * 0.4) * 0.015;
@@ -251,8 +261,9 @@
     }
 
     function handleResize() {
-        const nextWidth = mount.clientWidth || mount.offsetWidth || window.innerWidth;
-        const nextHeight = mount.clientHeight || mount.offsetHeight || 600;
+        const nextSize = getViewportSize();
+        const nextWidth = nextSize.width;
+        const nextHeight = nextSize.height;
         camera.aspect = nextWidth / nextHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(nextWidth, nextHeight);
