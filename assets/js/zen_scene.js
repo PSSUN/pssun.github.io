@@ -51,20 +51,20 @@
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(darkMode ? 0x111a26 : 0xdfefff, darkMode ? 0.022 : 0.027);
+    scene.fog = new THREE.FogExp2(darkMode ? 0x111a26 : 0xdfefff, darkMode ? 0.018 : 0.022);
 
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(7.8, 3.55, 7.1);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(6.5, 2.8, 6.2);
 
     const ambientLight = new THREE.HemisphereLight(
         darkMode ? 0xa7c4ff : 0xf4f8ff,
         darkMode ? 0x142032 : 0x799c66,
-        darkMode ? 1.08 : 1.2
+        darkMode ? 0.95 : 1.1
     );
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(darkMode ? 0x90baff : 0xfffcf5, darkMode ? 1.3 : 1.24);
-    sunLight.position.set(7, 10, 5.5);
+    const sunLight = new THREE.DirectionalLight(darkMode ? 0x90baff : 0xfffcf5, darkMode ? 1.2 : 1.15);
+    sunLight.position.set(6, 9, 4.5);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
     sunLight.shadow.mapSize.height = 1024;
@@ -125,15 +125,15 @@
         roughness: 0.98
     });
 
-    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.38, 2.95, 20), trunkMaterial);
+    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.32, 3.2, 20), trunkMaterial);
     trunk.position.set(0, 0.05, 0);
-    trunk.rotation.z = 0.08;
+    trunk.rotation.z = 0.06;
     trunk.castShadow = true;
     treeGroup.add(trunk);
 
-    const trunkTop = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.18, 0.9, 14), branchMaterial);
-    trunkTop.position.set(0.12, 1.55, 0.02);
-    trunkTop.rotation.z = -0.18;
+    const trunkTop = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.15, 1.0, 14), branchMaterial);
+    trunkTop.position.set(0.08, 1.68, 0.02);
+    trunkTop.rotation.z = -0.15;
     trunkTop.castShadow = true;
     treeGroup.add(trunkTop);
 
@@ -149,10 +149,10 @@
         return branch;
     }
 
-    addBranch(1.55, 0.05, 0.12, new THREE.Vector3(-0.34, 1.02, 0.06), new THREE.Euler(0.45, 0.24, -0.9));
-    addBranch(1.45, 0.05, 0.11, new THREE.Vector3(0.5, 1.16, -0.06), new THREE.Euler(-0.36, -0.34, 1.02));
-    addBranch(1.08, 0.04, 0.08, new THREE.Vector3(0.06, 1.62, 0.22), new THREE.Euler(0.15, 0.42, 0.2));
-    addBranch(0.88, 0.03, 0.06, new THREE.Vector3(-0.12, 1.5, -0.18), new THREE.Euler(-0.14, 0.68, -0.18));
+    addBranch(1.65, 0.04, 0.10, new THREE.Vector3(-0.28, 1.12, 0.08), new THREE.Euler(0.42, 0.22, -0.85));
+    addBranch(1.55, 0.04, 0.09, new THREE.Vector3(0.42, 1.28, -0.08), new THREE.Euler(-0.32, -0.32, 0.95));
+    addBranch(1.18, 0.03, 0.07, new THREE.Vector3(0.08, 1.78, 0.18), new THREE.Euler(0.12, 0.38, 0.15));
+    addBranch(0.95, 0.025, 0.05, new THREE.Vector3(-0.08, 1.65, -0.15), new THREE.Euler(-0.12, 0.62, -0.15));
 
     const canopyPalette = darkMode
         ? [0x3f6d47, 0x4f8357, 0x659d69, 0x83bb89, 0xa1d1a6]
@@ -164,9 +164,9 @@
     function createLeafCluster(radius, detail, color, position, scale, rotation) {
         const material = new THREE.MeshStandardMaterial({
             color,
-            roughness: 0.88,
+            roughness: 0.92,
             emissive: darkMode ? 0x0c140d : 0x000000,
-            emissiveIntensity: darkMode ? 0.18 : 0,
+            emissiveIntensity: darkMode ? 0.15 : 0,
             flatShading: false
         });
         const geometry = new THREE.IcosahedronGeometry(radius, detail);
@@ -180,22 +180,22 @@
     }
 
     const canopyBlobs = [
-        createLeafCluster(1.05, 2, canopyPalette[1], new THREE.Vector3(-0.62, 2.08, 0.18), new THREE.Vector3(1.15, 1.28, 1.08), new THREE.Euler(0.14, 0.12, -0.08)),
-        createLeafCluster(1.14, 2, canopyPalette[2], new THREE.Vector3(0.08, 2.34, 0.04), new THREE.Vector3(1.45, 1.52, 1.38), new THREE.Euler(0.08, -0.18, 0.04)),
-        createLeafCluster(0.98, 2, canopyPalette[3], new THREE.Vector3(0.72, 2.06, -0.06), new THREE.Vector3(1.18, 1.22, 1.08), new THREE.Euler(-0.08, 0.26, 0.05)),
-        createLeafCluster(0.88, 2, canopyPalette[0], new THREE.Vector3(-0.18, 2.78, -0.08), new THREE.Vector3(1.15, 0.92, 1.02), new THREE.Euler(0.16, 0.28, 0.1)),
-        createLeafCluster(0.82, 1, canopyPalette[4], new THREE.Vector3(-1.02, 1.92, 0.02), new THREE.Vector3(0.96, 0.88, 0.86), new THREE.Euler(0.06, -0.22, -0.12)),
-        createLeafCluster(0.76, 1, canopyPalette[4], new THREE.Vector3(1.06, 1.82, -0.18), new THREE.Vector3(0.94, 0.86, 0.9), new THREE.Euler(0.1, 0.18, 0.08)),
-        createLeafCluster(0.66, 1, canopyPalette[2], new THREE.Vector3(0.44, 2.88, 0.26), new THREE.Vector3(0.82, 0.74, 0.78), new THREE.Euler(-0.14, 0.12, 0.06)),
-        createLeafCluster(0.58, 1, canopyPalette[1], new THREE.Vector3(-0.58, 2.66, 0.26), new THREE.Vector3(0.78, 0.7, 0.74), new THREE.Euler(0.12, -0.16, -0.08))
+        createLeafCluster(1.35, 2, canopyPalette[1], new THREE.Vector3(-0.45, 2.45, 0.12), new THREE.Vector3(1.25, 1.35, 1.18), new THREE.Euler(0.12, 0.10, -0.06)),
+        createLeafCluster(1.42, 2, canopyPalette[2], new THREE.Vector3(0.15, 2.68, 0.08), new THREE.Vector3(1.55, 1.58, 1.45), new THREE.Euler(0.06, -0.15, 0.03)),
+        createLeafCluster(1.28, 2, canopyPalette[3], new THREE.Vector3(0.82, 2.38, -0.08), new THREE.Vector3(1.28, 1.32, 1.18), new THREE.Euler(-0.06, 0.22, 0.04)),
+        createLeafCluster(1.18, 2, canopyPalette[0], new THREE.Vector3(-0.12, 3.18, -0.06), new THREE.Vector3(1.25, 1.02, 1.12), new THREE.Euler(0.14, 0.24, 0.08)),
+        createLeafCluster(1.05, 1, canopyPalette[4], new THREE.Vector3(-0.88, 2.28, 0.06), new THREE.Vector3(1.05, 0.95, 0.92), new THREE.Euler(0.04, -0.18, -0.10)),
+        createLeafCluster(0.98, 1, canopyPalette[4], new THREE.Vector3(0.92, 2.18, -0.15), new THREE.Vector3(1.02, 0.92, 0.96), new THREE.Euler(0.08, 0.15, 0.06)),
+        createLeafCluster(0.85, 1, canopyPalette[2], new THREE.Vector3(0.38, 3.28, 0.22), new THREE.Vector3(0.88, 0.80, 0.85), new THREE.Euler(-0.12, 0.10, 0.05)),
+        createLeafCluster(0.75, 1, canopyPalette[1], new THREE.Vector3(-0.48, 3.05, 0.22), new THREE.Vector3(0.85, 0.75, 0.80), new THREE.Euler(0.10, -0.14, -0.06))
     ];
 
     const flowerColors = darkMode ? [0xbfd0ff, 0xded6ff, 0x9ad6ff, 0xd8e6ff] : [0xffd3df, 0xe2d6ff, 0xfff0a8, 0xd9efff];
     const flowerGroup = new THREE.Group();
     scene.add(flowerGroup);
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < 28; i++) {
         const petal = new THREE.Mesh(
-            new THREE.SphereGeometry(0.032 + Math.random() * 0.02, 8, 8),
+            new THREE.SphereGeometry(0.028 + Math.random() * 0.018, 8, 8),
             new THREE.MeshStandardMaterial({
                 color: flowerColors[i % flowerColors.length],
                 emissive: darkMode ? 0x101628 : 0x000000,
@@ -203,8 +203,8 @@
             })
         );
         const angle = Math.random() * Math.PI * 2;
-        const radius = 1.3 + Math.random() * 1.75;
-        petal.position.set(Math.cos(angle) * radius, -0.17 + Math.random() * 0.1, Math.sin(angle) * radius);
+        const radius = 1.5 + Math.random() * 1.5;
+        petal.position.set(Math.cos(angle) * radius, -0.15 + Math.random() * 0.08, Math.sin(angle) * radius);
         flowerGroup.add(petal);
     }
 
@@ -228,52 +228,52 @@
 
     const stars = [];
     if (darkMode) {
-        for (let i = 0; i < 78; i++) {
+        for (let i = 0; i < 68; i++) {
             const star = new THREE.Mesh(
-                new THREE.SphereGeometry(0.014 + Math.random() * 0.014, 8, 8),
-                new THREE.MeshBasicMaterial({ color: i % 5 === 0 ? 0xe7efff : 0xcfe0ff, transparent: true, opacity: 0.82 })
+                new THREE.SphereGeometry(0.012 + Math.random() * 0.012, 8, 8),
+                new THREE.MeshBasicMaterial({ color: i % 5 === 0 ? 0xe7efff : 0xcfe0ff, transparent: true, opacity: 0.78 })
             );
             const theta = Math.random() * Math.PI * 2;
             const radius = 7.5 + Math.random() * 11;
             star.position.set(Math.cos(theta) * radius, 4.1 + Math.random() * 4.2, Math.sin(theta) * radius);
             star.userData.phase = Math.random() * Math.PI * 2;
-            star.userData.speed = 0.8 + Math.random() * 0.8;
+            star.userData.speed = 0.7 + Math.random() * 0.7;
             scene.add(star);
             stars.push(star);
         }
     }
 
-    const orbitRadius = 8.6;
-    const cameraTarget = new THREE.Vector3(0, 1.35, 0);
+    const orbitRadius = 7.2;
+    const cameraTarget = new THREE.Vector3(0, 1.45, 0);
     const clock = new THREE.Clock();
 
     function animate() {
         const t = clock.getElapsedTime();
-        const angle = t * 0.1;
+        const angle = t * 0.08;
 
         camera.position.x = Math.cos(angle) * orbitRadius;
         camera.position.z = Math.sin(angle) * orbitRadius;
-        camera.position.y = 3.2 + Math.sin(t * 0.22) * 0.12;
+        camera.position.y = 2.6 + Math.sin(t * 0.18) * 0.1;
         camera.lookAt(cameraTarget);
 
-        const sway = Math.sin(t * 0.7) * 0.03;
-        treeGroup.rotation.z = sway * 0.22;
-        treeGroup.rotation.x = Math.cos(t * 0.34) * 0.01;
-        canopyGroup.rotation.y += 0.0009;
+        const sway = Math.sin(t * 0.55) * 0.025;
+        treeGroup.rotation.z = sway * 0.18;
+        treeGroup.rotation.x = Math.cos(t * 0.28) * 0.008;
+        canopyGroup.rotation.y += 0.0007;
 
         canopyBlobs.forEach((blob, index) => {
-            blob.rotation.y += 0.00055 + index * 0.00004;
-            blob.rotation.z = sway * (0.42 + index * 0.04);
-            blob.rotation.x = Math.cos(t * 0.38 + index) * 0.015;
-            blob.position.y += Math.sin(t * 0.9 + index * 0.7) * 0.0006;
+            blob.rotation.y += 0.00045 + index * 0.00003;
+            blob.rotation.z = sway * (0.35 + index * 0.03);
+            blob.rotation.x = Math.cos(t * 0.32 + index) * 0.012;
+            blob.position.y += Math.sin(t * 0.75 + index * 0.6) * 0.0005;
         });
 
         flowerGroup.children.forEach((flower, index) => {
-            flower.position.y += Math.sin(t * 1.5 + index * 0.8) * 0.0003;
+            flower.position.y += Math.sin(t * 1.2 + index * 0.7) * 0.00025;
         });
 
         stars.forEach((star, index) => {
-            star.material.opacity = 0.38 + (Math.sin(t * star.userData.speed + star.userData.phase + index * 0.04) + 1) * 0.22;
+            star.material.opacity = 0.32 + (Math.sin(t * star.userData.speed + star.userData.phase + index * 0.04) + 1) * 0.18;
         });
 
         renderer.render(scene, camera);
