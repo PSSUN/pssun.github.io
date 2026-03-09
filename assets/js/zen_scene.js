@@ -213,8 +213,8 @@
         }
     }
 
-    const orbitRadius = 7;
-    const cameraTarget = new THREE.Vector3(0, 2, 0);
+    const orbitRadius = 5.5;
+    const cameraTarget = new THREE.Vector3(0, 1.8, 0);
     const clock = new THREE.Clock();
 
     function animate() {
@@ -223,7 +223,7 @@
 
         camera.position.x = Math.cos(angle) * orbitRadius;
         camera.position.z = Math.sin(angle) * orbitRadius;
-        camera.position.y = 2.5 + Math.sin(t * 0.15) * 0.1;
+        camera.position.y = 2.2 + Math.sin(t * 0.15) * 0.08;
         camera.lookAt(cameraTarget);
 
         const sway = Math.sin(t * 0.4) * 0.015;
