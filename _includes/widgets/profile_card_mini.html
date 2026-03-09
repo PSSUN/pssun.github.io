@@ -107,16 +107,47 @@
                 </a>
             </div>
         </div>
+
+        <div class="card border-0 shadow-sm pub-stats-card mt-3">
+            <div class="card-body px-4 py-3">
+                <h6 class="card-title text-muted mb-3" style="font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;">
+                    <i class="fas fa-chart-column mr-2"></i>PUBLICATIONS / YEAR
+                </h6>
+                {% assign pubs_by_year = site.publications | sort: "date" | group_by_exp: "item", "item.date | date: '%Y'" %}
+                {% assign max_pub_count = 0 %}
+                {% for year in pubs_by_year %}
+                    {% assign year_count = year.items | size %}
+                    {% if year_count > max_pub_count %}
+                        {% assign max_pub_count = year_count %}
+                    {% endif %}
+                {% endfor %}
+                <div class="pub-chart">
+                    {% for year in pubs_by_year %}
+                        {% assign year_count = year.items | size %}
+                        {% assign bar_height = year_count | times: 100.0 | divided_by: max_pub_count %}
+                        <div class="pub-bar-item">
+                            <div class="pub-bar-value">{{ year_count }}</div>
+                            <div class="pub-bar-track">
+                                <div class="pub-bar-fill" style="height: {{ bar_height }}%;"></div>
+                            </div>
+                            <div class="pub-bar-label">{{ year.name }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <style>
-.links-card {
+.links-card,
+.pub-stats-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 12px;
 }
 
-.links-card:hover {
+.links-card:hover,
+.pub-stats-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
 }
@@ -160,6 +191,56 @@
 .link-desc {
     font-size: 0.8rem;
     margin-top: 2px;
+}
+
+.pub-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.6rem;
+    min-height: 170px;
+}
+
+.pub-bar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.pub-bar-value {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    line-height: 1;
+}
+
+.pub-bar-track {
+    width: 100%;
+    max-width: 32px;
+    height: 110px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--color-surface-muted);
+}
+
+.pub-bar-fill {
+    width: 100%;
+    border-radius: 999px;
+    min-height: 10px;
+    background: linear-gradient(180deg, #7ab6ff 0%, #007AFF 100%);
+    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.18);
+}
+
+.pub-bar-label {
+    font-size: 0.74rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.2px;
 }
 </style>
 
