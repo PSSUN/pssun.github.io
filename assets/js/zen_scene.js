@@ -129,16 +129,19 @@
             positionYOffset: -0.02
         },
         mountains: [
-            { x: -15, z: -25, r: 4.5, h: 3.2 },
-            { x: -8, z: -28, r: 3.8, h: 2.5 },
-            { x: 2, z: -30, r: 5.2, h: 4.0 },
-            { x: 10, z: -26, r: 3.5, h: 2.2 },
-            { x: 16, z: -24, r: 4.0, h: 2.8 },
-            { x: -20, z: -20, r: 2.8, h: 1.8 },
-            { x: 22, z: -22, r: 3.2, h: 2.0 }
+            { x: -15, z: -25, r: 4.5, h: 3.55 },
+            { x: -8, z: -28, r: 3.8, h: 2.8 },
+            { x: 2, z: -30, r: 5.2, h: 4.4 },
+            { x: 10, z: -26, r: 3.5, h: 2.45 },
+            { x: 16, z: -24, r: 4.0, h: 3.15 },
+            { x: -20, z: -20, r: 2.8, h: 2.05 },
+            { x: 22, z: -22, r: 3.2, h: 2.3 }
         ],
         mountainPositionY: -1.2,
-        mountainSegments: 7
+        mountainSegments: 7,
+        snowCapHeightScale: 0.22,
+        snowCapRadiusScale: 0.3,
+        snowCapYOffset: 0.08
     };
 
     const SKY_CONFIG = {
@@ -209,6 +212,7 @@
             grass: 0x205236,
             grassLight: 0x2c6844,
             mountain: 0x1a2530,
+            snow: 0xb8c5d6,
             cloudTop: 0xe9eef5,
             cloudBase: 0xcfd8e5
         },
@@ -221,6 +225,7 @@
             grass: 0x5ea55f,
             grassLight: 0x79c277,
             mountain: 0x8a9cac,
+            snow: 0xf3f7fb,
             cloudTop: 0xffffff,
             cloudBase: 0xdfe7f2
         }
@@ -340,6 +345,11 @@
         mountain: createStandardMaterial({
             color: initialTheme.mountain,
             roughness: 0.9,
+            flatShading: true
+        }),
+        snow: createStandardMaterial({
+            color: initialTheme.snow,
+            roughness: 0.92,
             flatShading: true
         }),
         star: createBasicMaterial({
@@ -549,6 +559,15 @@
         peak.position.y = mountain.h * 0.5;
         singleMountainGroup.add(peak);
 
+        const snowCap = new THREE.Mesh(sharedGeometries.mountainPeak, sharedMaterials.snow);
+        snowCap.scale.set(
+            mountain.r * GROUND_CONFIG.snowCapRadiusScale,
+            mountain.h * GROUND_CONFIG.snowCapHeightScale,
+            mountain.r * GROUND_CONFIG.snowCapRadiusScale
+        );
+        snowCap.position.y = mountain.h - (mountain.h * GROUND_CONFIG.snowCapHeightScale * 0.5) + GROUND_CONFIG.snowCapYOffset;
+        singleMountainGroup.add(snowCap);
+
         singleMountainGroup.position.set(mountain.x, GROUND_CONFIG.mountainPositionY, mountain.z);
         singleMountainGroup.rotation.y = Math.random() * Math.PI;
         mountainGroup.add(singleMountainGroup);
@@ -651,6 +670,7 @@
         sharedMaterials.grass.color.setHex(nextTheme.grass);
         sharedMaterials.grassLight.color.setHex(nextTheme.grassLight);
         sharedMaterials.mountain.color.setHex(nextTheme.mountain);
+        sharedMaterials.snow.color.setHex(nextTheme.snow);
         sharedMaterials.cloudTop.color.setHex(nextTheme.cloudTop);
         sharedMaterials.cloudBase.color.setHex(nextTheme.cloudBase);
 
