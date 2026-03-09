@@ -37,6 +37,15 @@ body {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+.global-particle-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
 mark {
     background-color: rgba(var(--color-surface-rgb), 0.5);
     color: var(--color-text);
