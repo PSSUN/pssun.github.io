@@ -53,8 +53,8 @@
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(darkMode ? 0x111a26 : 0xdfefff, darkMode ? 0.018 : 0.022);
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(6.5, 2.8, 6.2);
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.set(5.8, 1.9, 5.5);
 
     const ambientLight = new THREE.HemisphereLight(
         darkMode ? 0xa7c4ff : 0xf4f8ff,
@@ -243,8 +243,8 @@
         }
     }
 
-    const orbitRadius = 7.2;
-    const cameraTarget = new THREE.Vector3(0, 1.45, 0);
+    const orbitRadius = 5.8;
+    const cameraTarget = new THREE.Vector3(0, 1.5, 0);
     const clock = new THREE.Clock();
 
     function animate() {
@@ -253,7 +253,7 @@
 
         camera.position.x = Math.cos(angle) * orbitRadius;
         camera.position.z = Math.sin(angle) * orbitRadius;
-        camera.position.y = 2.6 + Math.sin(t * 0.18) * 0.1;
+        camera.position.y = 1.9 + Math.sin(t * 0.18) * 0.1;
         camera.lookAt(cameraTarget);
 
         const sway = Math.sin(t * 0.55) * 0.025;
