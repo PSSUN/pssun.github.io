@@ -238,13 +238,25 @@
     ];
 
     mountains.forEach((m) => {
-        const mountain = new THREE.Mesh(
+        const mountainGroup_single = new THREE.Group();
+
+        const peak = new THREE.Mesh(
             new THREE.ConeGeometry(m.r, m.h, 7),
             mountainMaterial
         );
-        mountain.position.set(m.x, m.h * 0.5 - 0.5, m.z);
-        mountain.rotation.y = Math.random() * Math.PI;
-        mountainGroup.add(mountain);
+        peak.position.y = m.h * 0.5;
+        mountainGroup_single.add(peak);
+
+        const base = new THREE.Mesh(
+            new THREE.CylinderGeometry(m.r * 0.7, m.r * 0.9, 1.5, 7),
+            mountainMaterial
+        );
+        base.position.y = -0.25;
+        mountainGroup_single.add(base);
+
+        mountainGroup_single.position.set(m.x, -0.5, m.z);
+        mountainGroup_single.rotation.y = Math.random() * Math.PI;
+        mountainGroup.add(mountainGroup_single);
     });
 
     const stars = [];
