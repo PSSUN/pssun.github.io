@@ -61,19 +61,19 @@
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(darkMode ? 0x0d1420 : 0xf2f8ff, darkMode ? 0.015 : 0.013);
+    scene.fog = new THREE.FogExp2(darkMode ? 0x0a111b : 0xf2f8ff, darkMode ? 0.019 : 0.013);
 
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
     camera.position.set(0, 2.7, 5.2);
 
     const ambientLight = new THREE.HemisphereLight(
         darkMode ? 0x8fb0d9 : 0xf6fbff,
-        darkMode ? 0x1a2a3a : 0x8eb58e,
-        darkMode ? 0.8 : 1.08
+        darkMode ? 0x142233 : 0x8eb58e,
+        darkMode ? 0.62 : 1.08
     );
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(darkMode ? 0x7a9fd0 : 0xfff6db, darkMode ? 1.0 : 1.35);
+    const sunLight = new THREE.DirectionalLight(darkMode ? 0x5d7ca8 : 0xfff6db, darkMode ? 0.78 : 1.35);
     sunLight.position.set(5, 8, 3);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.width = 1024;
@@ -90,18 +90,18 @@
     scene.add(treeGroup);
 
     const trunkMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x5a4a3a : 0xa88258,
+        color: darkMode ? 0x433327 : 0xa88258,
         roughness: 0.95
     });
 
     const foliageMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x2d5a3d : 0x5f9f6f,
+        color: darkMode ? 0x1f4632 : 0x5f9f6f,
         roughness: 0.9,
         flatShading: true
     });
 
     const foliageLightMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x3d7a4d : 0x79bf89,
+        color: darkMode ? 0x2d6043 : 0x79bf89,
         roughness: 0.9,
         flatShading: true
     });
@@ -124,14 +124,14 @@
 
     const pineLayers = [
         { r: 1.05, y: 1.05, h: 0.58 },
-        { r: 0.95, y: 1.3, h: 0.64 },
-        { r: 0.84, y: 1.58, h: 0.7 },
-        { r: 0.74, y: 1.88, h: 0.76 },
-        { r: 0.64, y: 2.2, h: 0.82 },
-        { r: 0.54, y: 2.52, h: 0.88 },
-        { r: 0.45, y: 2.84, h: 0.94 },
-        { r: 0.36, y: 3.16, h: 1.0 },
-        { r: 0.28, y: 3.48, h: 1.06 }
+        { r: 0.95, y: 1.28, h: 0.62 },
+        { r: 0.84, y: 1.54, h: 0.67 },
+        { r: 0.74, y: 1.82, h: 0.72 },
+        { r: 0.64, y: 2.1, h: 0.76 },
+        { r: 0.54, y: 2.38, h: 0.8 },
+        { r: 0.45, y: 2.65, h: 0.84 },
+        { r: 0.36, y: 2.9, h: 0.86 },
+        { r: 0.28, y: 3.12, h: 0.82 }
     ];
 
     pineLayers.forEach((layer, index) => {
@@ -163,10 +163,10 @@
     });
 
     const topCone = new THREE.Mesh(
-        new THREE.ConeGeometry(0.18, 0.55, 8),
+        new THREE.ConeGeometry(0.15, 0.42, 8),
         foliageLightMaterial
     );
-    topCone.position.set(0, 4.02, 0);
+    topCone.position.set(0, 3.42, 0);
     topCone.castShadow = true;
     treeGroup.add(topCone);
 
@@ -174,7 +174,7 @@
     scene.add(groundGroup);
 
     const groundMaterial = new THREE.MeshStandardMaterial({
-        color: darkMode ? 0x2a3a2a : 0x89be72,
+        color: darkMode ? 0x182a1d : 0x89be72,
         roughness: 1
     });
 
@@ -206,6 +206,36 @@
         groundGroup.add(mesh);
     });
 
+    const grassMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x205236 : 0x5ea55f,
+        roughness: 0.95,
+        flatShading: true
+    });
+    const grassLightMaterial = new THREE.MeshStandardMaterial({
+        color: darkMode ? 0x2c6844 : 0x79c277,
+        roughness: 0.95,
+        flatShading: true
+    });
+
+    const grassCount = darkMode ? 60 : 85;
+    for (let i = 0; i < grassCount; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const radius = 1.35 + Math.random() * 4.9;
+        const x = Math.cos(theta) * radius + (Math.random() - 0.5) * 0.22;
+        const z = Math.sin(theta) * radius + (Math.random() - 0.5) * 0.22;
+        const bladeHeight = 0.09 + Math.random() * 0.13;
+        const bladeRadius = 0.018 + Math.random() * 0.018;
+        const blade = new THREE.Mesh(
+            new THREE.ConeGeometry(bladeRadius, bladeHeight, 5),
+            Math.random() > 0.5 ? grassMaterial : grassLightMaterial
+        );
+        blade.position.set(x, bladeHeight * 0.45 - 0.02, z);
+        blade.rotation.y = Math.random() * Math.PI;
+        blade.castShadow = false;
+        blade.receiveShadow = true;
+        groundGroup.add(blade);
+    }
+
     const stars = [];
     if (darkMode) {
         for (let i = 0; i < 50; i++) {
@@ -223,8 +253,53 @@
         }
     }
 
+    const clouds = [];
+    if (!darkMode) {
+        const cloudMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.98,
+            transparent: true,
+            opacity: 0.78
+        });
+
+        for (let i = 0; i < 6; i++) {
+            const cloud = new THREE.Group();
+            const puffs = [
+                { x: -0.28, y: 0.0, z: 0.0, s: 0.25 },
+                { x: 0.0, y: 0.07, z: 0.03, s: 0.32 },
+                { x: 0.28, y: 0.0, z: -0.02, s: 0.24 },
+                { x: 0.12, y: -0.03, z: 0.18, s: 0.2 }
+            ];
+
+            puffs.forEach((puff) => {
+                const puffMesh = new THREE.Mesh(new THREE.SphereGeometry(puff.s, 8, 8), cloudMaterial);
+                puffMesh.position.set(puff.x, puff.y, puff.z);
+                puffMesh.castShadow = false;
+                puffMesh.receiveShadow = false;
+                cloud.add(puffMesh);
+            });
+
+            const theta = Math.random() * Math.PI * 2;
+            const radius = 6 + Math.random() * 4;
+            const baseX = Math.cos(theta) * radius;
+            const baseZ = Math.sin(theta) * radius * 0.6;
+            const baseY = 4.5 + Math.random() * 1.0;
+
+            cloud.position.set(baseX, baseY, baseZ);
+            cloud.scale.setScalar(0.9 + Math.random() * 0.5);
+            cloud.userData.baseX = baseX;
+            cloud.userData.baseY = baseY;
+            cloud.userData.baseZ = baseZ;
+            cloud.userData.phase = Math.random() * Math.PI * 2;
+            cloud.userData.speed = 0.08 + Math.random() * 0.08;
+
+            scene.add(cloud);
+            clouds.push(cloud);
+        }
+    }
+
     const orbitRadius = 4.4;
-    const cameraTarget = new THREE.Vector3(0, 2.15, 0);
+    const cameraTarget = new THREE.Vector3(0, 1.98, 0);
     const clock = new THREE.Clock();
 
     function animate() {
@@ -254,6 +329,15 @@
 
         stars.forEach((star, index) => {
             star.material.opacity = 0.3 + (Math.sin(t * star.userData.speed + star.userData.phase) + 1) * 0.2;
+        });
+
+        clouds.forEach((cloud) => {
+            const driftX = Math.sin(t * cloud.userData.speed + cloud.userData.phase) * 0.45;
+            const driftZ = Math.cos(t * cloud.userData.speed * 0.7 + cloud.userData.phase) * 0.2;
+            const driftY = Math.sin(t * cloud.userData.speed * 0.5 + cloud.userData.phase) * 0.03;
+            cloud.position.x = cloud.userData.baseX + driftX;
+            cloud.position.z = cloud.userData.baseZ + driftZ;
+            cloud.position.y = cloud.userData.baseY + driftY;
         });
 
         renderer.render(scene, camera);
