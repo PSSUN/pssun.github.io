@@ -10,6 +10,9 @@ navbar_title: Zen
         <button id="zen-bgm-toggle" class="zen-bgm-btn" type="button" aria-pressed="false">Sound Off</button>
         <div id="zen-bgm-status" class="zen-bgm-status">Ambient music is off</div>
     </div>
+    <audio id="zen-bgm-audio" preload="auto" loop hidden>
+        <source src="{{ '/assets/music/zen.mp3' | relative_url }}" type="audio/mpeg">
+    </audio>
     <div id="pomodoro-widget" class="pomodoro-widget" aria-label="Pomodoro timer">
         <div id="pomodoro-now" class="pomodoro-now" aria-live="polite"></div>
         <div id="pomodoro-time" class="pomodoro-time">25:00</div>
@@ -225,206 +228,30 @@ navbar_title: Zen
     const resetBtn = document.getElementById('pomodoro-reset');
     const bgmToggleBtn = document.getElementById('zen-bgm-toggle');
     const bgmStatusEl = document.getElementById('zen-bgm-status');
+    const bgmAudio = document.getElementById('zen-bgm-audio');
 
-    if (!nowEl || !timeEl || !startBtn || !resetBtn || !bgmToggleBtn || !bgmStatusEl) return;
+    if (!nowEl || !timeEl || !startBtn || !resetBtn || !bgmToggleBtn || !bgmStatusEl || !bgmAudio) return;
 
     let remaining = DURATION_SECONDS;
     let timerId = null;
     let clockTimerId = null;
     const BGM_STORAGE_KEY = 'zen-bgm-enabled';
-    const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
     let bgmEnabled = localStorage.getItem(BGM_STORAGE_KEY) === 'true';
-    let bgmEngine = null;
     let gestureArmed = false;
 
-    function createZenBgmEngine() {
-        if (!AudioContextCtor) return null;
+    bgmAudio.volume = 0.36;
+    bgmAudio.setAttribute('playsinline', '');
 
-        const audioContext = new AudioContextCtor();
-        const masterGain = audioContext.createGain();
-        masterGain.gain.value = 0;
-
-        const bedFilter = audioContext.createBiquadFilter();
-        bedFilter.type = 'lowpass';
-        bedFilter.frequency.value = 1200;
-        bedFilter.Q.value = 0.25;
-
-        const shimmerFilter = audioContext.createBiquadFilter();
-        shimmerFilter.type = 'highpass';
-        shimmerFilter.frequency.value = 480;
-        shimmerFilter.Q.value = 0.3;
-
-        bedFilter.connect(masterGain);
-        shimmerFilter.connect(masterGain);
-        masterGain.connect(audioContext.destination);
-
-        const bedVoices = [
-            { type: 'sine', frequency: 174.61, gain: 0.02 },
-            { type: 'triangle', frequency: 220.0, gain: 0.012 },
-            { type: 'sine', frequency: 293.66, gain: 0.009 }
-        ].map(function (voice) {
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = voice.type;
-            oscillator.frequency.value = voice.frequency;
-
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = voice.gain;
-
-            oscillator.connect(gainNode);
-            gainNode.connect(bedFilter);
-            oscillator.start();
-            return { oscillator: oscillator, gainNode: gainNode };
-        });
-
-        const shimmerVoices = [
-            { type: 'sine', frequency: 523.25, gain: 0.0035 },
-            { type: 'triangle', frequency: 659.25, gain: 0.0024 }
-        ].map(function (voice) {
-            const oscillator = audioContext.createOscillator();
-            oscillator.type = voice.type;
-            oscillator.frequency.value = voice.frequency;
-
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = voice.gain;
-
-            oscillator.connect(gainNode);
-            gainNode.connect(shimmerFilter);
-            oscillator.start();
-            return { oscillator: oscillator, gainNode: gainNode };
-        });
-
-        const breathLfo = audioContext.createOscillator();
-        breathLfo.type = 'sine';
-        breathLfo.frequency.value = 0.05;
-        const breathDepth = audioContext.createGain();
-        breathDepth.gain.value = 0.007;
-        breathLfo.connect(breathDepth);
-        breathDepth.connect(masterGain.gain);
-        breathLfo.start();
-
-        const shimmerLfo = audioContext.createOscillator();
-        shimmerLfo.type = 'sine';
-        shimmerLfo.frequency.value = 0.11;
-        const shimmerDepth = audioContext.createGain();
-        shimmerDepth.gain.value = 22;
-        shimmerLfo.connect(shimmerDepth);
-        shimmerVoices.forEach(function (voice) {
-            shimmerDepth.connect(voice.oscillator.frequency);
-        });
-        shimmerLfo.start();
-
-        let bellTimerId = 0;
-        let pulseTimerId = 0;
-        let disposed = false;
-
-        function schedulePulse() {
-            if (disposed) return;
-
-            const now = audioContext.currentTime;
-            const interval = 3.8 + Math.random() * 3.4;
-            const pulsePeak = 0.021 + Math.random() * 0.012;
-
-            masterGain.gain.cancelScheduledValues(now);
-            masterGain.gain.setValueAtTime(Math.max(masterGain.gain.value, 0.012), now);
-            masterGain.gain.linearRampToValueAtTime(pulsePeak, now + 1.1);
-            masterGain.gain.linearRampToValueAtTime(0.013, now + interval);
-
-            pulseTimerId = window.setTimeout(schedulePulse, interval * 1000);
-        }
-
-        function playBell() {
-            if (disposed) return;
-
-            const now = audioContext.currentTime;
-            const bellOsc = audioContext.createOscillator();
-            const bellGain = audioContext.createGain();
-            const bellFilter = audioContext.createBiquadFilter();
-            const bellNotes = [659.25, 783.99, 987.77, 1174.66];
-            const bellFrequency = bellNotes[Math.floor(Math.random() * bellNotes.length)];
-
-            bellOsc.type = 'sine';
-            bellOsc.frequency.setValueAtTime(bellFrequency, now);
-            bellOsc.frequency.exponentialRampToValueAtTime(bellFrequency * 0.72, now + 3.4);
-
-            bellGain.gain.setValueAtTime(0.0001, now);
-            bellGain.gain.exponentialRampToValueAtTime(0.008, now + 0.06);
-            bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
-
-            bellFilter.type = 'bandpass';
-            bellFilter.frequency.value = 1750;
-            bellFilter.Q.value = 0.7;
-
-            bellOsc.connect(bellFilter);
-            bellFilter.connect(bellGain);
-            bellGain.connect(masterGain);
-
-            bellOsc.start(now);
-            bellOsc.stop(now + 4.4);
-        }
-
-        function scheduleBell() {
-            if (disposed) return;
-            const delay = 9000 + Math.random() * 7000;
-            bellTimerId = window.setTimeout(function () {
-                playBell();
-                scheduleBell();
-            }, delay);
-        }
-
-        scheduleBell();
-        schedulePulse();
-
-        return {
-            start: async function () {
-                if (disposed) return;
-                if (audioContext.state === 'suspended') {
-                    await audioContext.resume();
-                }
-                const now = audioContext.currentTime;
-                masterGain.gain.cancelScheduledValues(now);
-                masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-                masterGain.gain.linearRampToValueAtTime(0.02, now + 1.8);
-            },
-            stop: function () {
-                if (disposed) return;
-                const now = audioContext.currentTime;
-                masterGain.gain.cancelScheduledValues(now);
-                masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-                masterGain.gain.linearRampToValueAtTime(0.0001, now + 0.45);
-            },
-            destroy: function () {
-                if (disposed) return;
-                this.stop();
-                disposed = true;
-                if (bellTimerId) {
-                    window.clearTimeout(bellTimerId);
-                    bellTimerId = 0;
-                }
-                if (pulseTimerId) {
-                    window.clearTimeout(pulseTimerId);
-                    pulseTimerId = 0;
-                }
-                window.setTimeout(function () {
-                    bedVoices.forEach(function (voice) {
-                        voice.oscillator.stop();
-                    });
-                    shimmerVoices.forEach(function (voice) {
-                        voice.oscillator.stop();
-                    });
-                    breathLfo.stop();
-                    shimmerLfo.stop();
-                    void audioContext.close();
-                }, 520);
-            }
-        };
+    function canUseBgm() {
+        return typeof bgmAudio.play === 'function';
     }
 
     function setBgmUiState() {
-        if (!AudioContextCtor) {
+        if (!canUseBgm()) {
             bgmToggleBtn.textContent = 'Sound N/A';
             bgmToggleBtn.disabled = true;
             bgmToggleBtn.setAttribute('aria-pressed', 'false');
-            bgmStatusEl.textContent = 'Web Audio is not supported here';
+            bgmStatusEl.textContent = 'Audio playback is not supported here';
             return;
         }
 
@@ -441,29 +268,21 @@ navbar_title: Zen
     }
 
     async function startBgm() {
-        if (!AudioContextCtor) return;
-        if (!bgmEngine) {
-            bgmEngine = createZenBgmEngine();
-            if (!bgmEngine) return;
-        }
+        if (!canUseBgm()) return;
 
         try {
-            await bgmEngine.start();
+            await bgmAudio.play();
             setBgmEnabled(true);
         } catch (error) {
+            bgmAudio.pause();
+            bgmAudio.currentTime = 0;
             setBgmEnabled(false);
-            if (bgmEngine) {
-                bgmEngine.destroy();
-                bgmEngine = null;
-            }
         }
     }
 
     function stopBgm() {
-        if (bgmEngine) {
-            bgmEngine.destroy();
-            bgmEngine = null;
-        }
+        bgmAudio.pause();
+        bgmAudio.currentTime = 0;
         setBgmEnabled(false);
     }
 
@@ -476,7 +295,7 @@ navbar_title: Zen
     }
 
     function armBgmGestureStart() {
-        if (gestureArmed || !bgmEnabled || !AudioContextCtor) return;
+        if (gestureArmed || !bgmEnabled || !canUseBgm()) return;
         window.addEventListener('pointerdown', handleGestureStart);
         window.addEventListener('keydown', handleGestureStart);
         window.addEventListener('touchstart', handleGestureStart, { passive: true });
@@ -490,7 +309,7 @@ navbar_title: Zen
     }
 
     bgmToggleBtn.addEventListener('click', async function () {
-        if (!AudioContextCtor) return;
+        if (!canUseBgm()) return;
         disarmBgmGestureStart();
         if (bgmEnabled) {
             stopBgm();
@@ -584,19 +403,15 @@ navbar_title: Zen
         stopTimer();
         stopClock();
         disarmBgmGestureStart();
-        if (bgmEngine) {
-            bgmEngine.destroy();
-            bgmEngine = null;
-        }
+        bgmAudio.pause();
+        bgmAudio.currentTime = 0;
     });
     window.addEventListener('beforeunload', function () {
         stopTimer();
         stopClock();
         disarmBgmGestureStart();
-        if (bgmEngine) {
-            bgmEngine.destroy();
-            bgmEngine = null;
-        }
+        bgmAudio.pause();
+        bgmAudio.currentTime = 0;
     });
 
     setBgmUiState();
