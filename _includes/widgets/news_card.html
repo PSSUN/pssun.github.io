@@ -1,17 +1,17 @@
 {% assign news_by_year = site.news | sort: "date" | reverse | slice: 0, include.limit | group_by_exp: "item", "item.date | date: '%Y'" -%}
 
-<div class="my-3 shadow-sm rounded-xl">
-    <h6 class="p-3 mb-0 border-bottom"><i class="fas fa-rss"></i> News</h6>
-    <div class="px-3 pb-1 small">
+<div class="my-3 p-0 shadow-sm rounded-xl news-panel" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+    <h6 class="border-bottom p-3 mb-0"><i class="fas fa-rss"></i> News</h6>
+    <div class="p-3 small">
         {% for year in news_by_year %}
-        <div class="media py-1 {% if not_first -%}border-top{%- endif %}">
+        <div class="news-group {% if not_first -%}border-top{%- endif %}">
             {% assign not_first = true %}
-            <div class="mr-3 text-muted my-1">{{ year.name }}</div>
-            <div class="media-body">
+            <div class="news-year text-muted">{{ year.name }}</div>
+            <div class="news-items">
                 {% for item in year.items %}
-                <div class="my-1 d-flex">
-                    <div>{{ item.title }}</div>
-                    <div class="ml-auto mt-auto text-muted no-break"><i>{{ item.date | date: "%b %d" }}</i></div>
+                <div class="news-item d-flex">
+                    <div class="news-title">{{ item.title }}</div>
+                    <div class="news-date ml-auto mt-auto text-muted no-break"><i>{{ item.date | date: "%b %d" }}</i></div>
                 </div>
                 {% endfor %}
             </div>
@@ -19,3 +19,67 @@
         {% endfor %}
     </div>
 </div>
+
+<style>
+.news-panel .news-group {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    column-gap: 1rem;
+    padding: 0.75rem 0;
+}
+
+.news-panel .news-group:first-child {
+    padding-top: 0;
+}
+
+.news-panel .news-group:last-child {
+    padding-bottom: 0;
+}
+
+.news-panel .news-year {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.1rem;
+}
+
+.news-panel .news-items {
+    min-width: 0;
+}
+
+.news-panel .news-item + .news-item {
+    margin-top: 0.55rem;
+}
+
+.news-panel .news-item {
+    align-items: baseline;
+    gap: 0.9rem;
+}
+
+.news-panel .news-title {
+    min-width: 0;
+    line-height: 1.6;
+}
+
+.news-panel .news-date {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 767.98px) {
+    .news-panel .news-group {
+        grid-template-columns: 1fr;
+        row-gap: 0.4rem;
+    }
+
+    .news-panel .news-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.15rem;
+    }
+
+    .news-panel .news-date {
+        margin-left: 0 !important;
+    }
+}
+</style>
