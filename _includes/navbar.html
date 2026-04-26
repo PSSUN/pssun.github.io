@@ -28,6 +28,10 @@
 <script>
     window.addEventListener('scroll', function() {
         const navbar = document.querySelector('.navbar-elegant');
+        if (!navbar) {
+            return;
+        }
+
         if (window.scrollY > 10) {
             navbar.classList.add('scrolled');
         } else {

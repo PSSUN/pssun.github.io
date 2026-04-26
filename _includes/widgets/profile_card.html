@@ -7,11 +7,11 @@
                         {% if site.data.profile.portrait_url %}
                         <!-- When the screen is wider than md, float the portrait on the right -->
                         <div class="figure float-right ml-4 mb-4 d-none d-md-block profile-portrait-wrapper">
-                            <img 
-                                src="{{ site.data.profile.portrait_url | relative_url }}" 
-                                class="figure-img img-fluid img-thumbnail profile-portrait" 
-                                data-toggle="tooltip" 
-                                data-placement="top" 
+                            <img
+                                src="{{ site.data.profile.portrait_url | relative_url }}"
+                                class="figure-img img-fluid img-thumbnail profile-portrait"
+                                data-toggle="tooltip"
+                                data-placement="top"
                                 title="{{ site.data.profile.portrait_caption }}">
                         </div>
                         {% endif %}
@@ -43,7 +43,7 @@
                             <a target="_blank" href="{{ site.data.profile.cv_link | relative_url }}"><i class="fas fa-file-alt"></i> Curriculum Vitae</a> <br/>
                         {% endif %}
                     </div>
-        
+
                 </div>
                 <hr />
                 <div class="row">
@@ -62,7 +62,7 @@
                             <i class="fab fa-google-scholar"></i> Google Scholar
                         </a>
                         {% endif %}
-                        
+
                         {% if site.data.profile.github %}
                         <a class="pr-3 no-break" target="_blank" href="https://github.com/{{ site.data.profile.github }}">
                             <i class="fab fa-github"></i> GitHub
@@ -95,7 +95,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>
 
