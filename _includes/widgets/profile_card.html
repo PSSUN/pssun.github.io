@@ -10,7 +10,6 @@
                             <img 
                                 src="{{ site.data.profile.portrait_url | relative_url }}" 
                                 class="figure-img img-fluid img-thumbnail profile-portrait" 
-                                style="height: 200px; border-radius: 12px;" 
                                 data-toggle="tooltip" 
                                 data-placement="top" 
                                 title="{{ site.data.profile.portrait_caption }}">
@@ -24,7 +23,7 @@
                             {% if site.data.profile.portrait_url %}
                             <div class="ml-auto d-md-none">
                                 <a target="_blank" href="{{ site.data.profile.portrait_url | relative_url }}">
-                                    <img src="{{ site.data.profile.portrait_url | relative_url }}" class="rounded-circle" style="height: 48px;" alt="Portrait">
+                                    <img src="{{ site.data.profile.portrait_url | relative_url }}" class="profile-avatar-small" alt="Portrait">
                                 </a>
                             </div>
                             {% endif %}
@@ -119,42 +118,3 @@
     </div>
 </div>
 {% endif %}
-
-<style>
-.profile-card-hover {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 16px;
-}
-
-.profile-card-hover:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 
-                0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-4px);
-}
-
-.profile-portrait-wrapper {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.profile-portrait-wrapper:hover .profile-portrait {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    transform: translateY(-4px) scale(1.02);
-}
-
-.profile-portrait {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.profile-bio-hover {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 8px;
-    padding: 12px;
-    margin: -12px;
-}
-
-.profile-bio-hover:hover {
-    background: rgba(0, 122, 255, 0.03);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    transform: translateY(-1px);
-}
-</style>

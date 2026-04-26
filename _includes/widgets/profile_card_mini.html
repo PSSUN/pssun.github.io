@@ -1,4 +1,4 @@
-<div class="row sticky-top" style="top: 80px">
+<div class="row sticky-top homepage-sidebar">
     <div class="col">
         <div class="card border-0 shadow-sm">
             <div class="card-body px-4 pt-4 pb-3">
@@ -7,16 +7,15 @@
                         {% if site.data.profile.portrait_url %}
                         <!-- When the screen is wider than md, float the portrait on the right -->
                         <div class="figure d-none d-md-block">
-                            <img 
-                                src="{{ site.data.profile.portrait_url | relative_url }}" 
-                                class="figure-img img-fluid" 
-                                style="border-radius: 8px;" 
-                                data-toggle="tooltip" 
+                            <img
+                                src="{{ site.data.profile.portrait_url | relative_url }}"
+                                class="figure-img img-fluid profile-portrait-mini"
+                                data-toggle="tooltip"
                                 data-placement="top" 
                                 title="{{ site.data.profile.portrait_caption }}">
                         </div>
                         <div class="mb-3 d-md-none text-center">
-                            <img src="{{ site.data.profile.portrait_url | relative_url }}" class="rounded-circle" style="max-width: 50%;" alt="Portrait">
+                            <img src="{{ site.data.profile.portrait_url | relative_url }}" class="profile-portrait-mobile" alt="Portrait">
                         </div>
                         {% endif %}
                     </div>
@@ -92,7 +91,7 @@
 
         <div class="card border-0 shadow-sm links-card mt-3">
             <div class="card-body px-4 py-3">
-                <h6 class="card-title text-muted mb-3" style="font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;">
+                <h6 class="section-heading border-0 px-0 pt-0 pb-3">
                     <i class="fas fa-link mr-2"></i>LINKS
                 </h6>
                 <a href="https://gr.xjtu.edu.cn/en/web/kaiye" target="_blank" class="d-flex align-items-center text-decoration-none link-item py-2">
@@ -110,7 +109,7 @@
 
         <div class="card border-0 shadow-sm pub-stats-card mt-3">
             <div class="card-body px-4 py-3">
-                <h6 class="card-title text-muted mb-3" style="font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;">
+                <h6 class="section-heading border-0 px-0 pt-0 pb-3">
                     <i class="fas fa-chart-column mr-2"></i>PUBLICATIONS / YEAR
                 </h6>
                 {% assign pubs_by_year = site.publications | sort: "date" | group_by_exp: "item", "item.date | date: '%Y'" %}
@@ -138,111 +137,6 @@
         </div>
     </div>
 </div>
-
-<style>
-.links-card,
-.pub-stats-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 12px;
-}
-
-.links-card:hover,
-.pub-stats-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-}
-
-.link-item {
-    color: var(--color-text);
-    transition: all 0.2s ease;
-    border-radius: 8px;
-    margin: 0 -8px;
-    padding: 12px 8px;
-}
-
-.link-item:hover {
-    background: rgba(0, 122, 255, 0.05);
-    color: var(--color-link);
-    text-decoration: none;
-}
-
-:root[data-theme="dark"] .link-item:hover {
-    background: rgba(122, 182, 255, 0.12);
-    color: var(--color-link-hover);
-}
-
-.link-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 14px;
-}
-
-.link-title {
-    font-weight: 500;
-    font-size: 0.95rem;
-}
-
-.link-desc {
-    font-size: 0.8rem;
-    margin-top: 2px;
-}
-
-.pub-chart {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 0.6rem;
-    min-height: 170px;
-}
-
-.pub-bar-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.45rem;
-}
-
-.pub-bar-value {
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-    font-weight: 600;
-    line-height: 1;
-}
-
-.pub-bar-track {
-    width: 100%;
-    max-width: 32px;
-    height: 110px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 4px;
-    border-radius: 999px;
-    background: var(--color-surface-muted);
-}
-
-.pub-bar-fill {
-    width: 100%;
-    border-radius: 999px;
-    min-height: 10px;
-    background: linear-gradient(180deg, #7ab6ff 0%, #007AFF 100%);
-    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.18);
-}
-
-.pub-bar-label {
-    font-size: 0.74rem;
-    color: var(--color-text-muted);
-    font-weight: 500;
-    letter-spacing: 0.2px;
-}
-</style>
 
 {% if site.data.profile.wechat_qrcode %}
 <div class="modal fade" id="modal-wechat" tabindex="-1" aria-hidden="true">

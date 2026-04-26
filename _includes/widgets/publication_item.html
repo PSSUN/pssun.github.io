@@ -4,9 +4,9 @@
         <div class="row no-gutters pub-card {% unless include.hide_bottom_border %}border-bottom{% endunless %}">
             <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
                 {%- if item.cover -%}
-                <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+                <img data-src="{{ item.cover | relative_url }}" alt="{{ item.title }}" class="lazy w-100 publication-cover" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
                 {%- else -%}
-                <svg class="bubble-visual-hash lazy w-100 rounded-sm" data-bubble-visual-hash="{{ item.id }}" viewBox="0 0 300 200"></svg>
+                <svg class="bubble-visual-hash lazy w-100 publication-cover" data-bubble-visual-hash="{{ item.id }}" viewBox="0 0 300 200"></svg>
                 {%- endif -%}
             </div>
             <div class="col-md-9 col-xl-10 p-3 pl-md-0">
@@ -31,7 +31,7 @@
 </div>
 
 <div class="row no-gutters d-md-none {% unless include.hide_bottom_border %}border-bottom{% endunless %} {% if include.first %}rounded-xl-top{% endif %} {% if include.last %}rounded-xl-bottom{% endif %} {% if item.cover %}lazy{% endif %}" data-src="{{ item.cover | relative_url }}">
-    <div class="w-100 {% if include.first %}rounded-xl-top{% endif %} {% if include.last %}rounded-xl-bottom{% endif %}" style="background-color: rgba(var(--color-surface-rgb), 0.9);">
+    <div class="w-100 pub-card-mobile-surface {% if include.first %}rounded-xl-top{% endif %} {% if include.last %}rounded-xl-bottom{% endif %}">
         <div class="d-flex align-items-start flex-column py-3 px-4">
             <div class="mb-auto"></div>
             <div>
@@ -54,97 +54,3 @@
     </div>
 
 </div>
-
-<style>
-.pub-item-wrapper {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 0 -12px;
-    padding: 0 12px;
-}
-
-.pub-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 12px;
-    padding: 16px 12px;
-    position: relative;
-    background: var(--color-surface);
-}
-
-.pub-card::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    bottom: -1px;
-    border-radius: 13px;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(0, 122, 255, 0) 20%,
-        rgba(0, 122, 255, 0.6) 50%,
-        rgba(0, 122, 255, 0) 80%,
-        transparent 100%
-    );
-    background-size: 200% 100%;
-    background-position: 200% 0;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-    pointer-events: none;
-    z-index: -1;
-    padding: 1px;
-    -webkit-mask: 
-        linear-gradient(var(--color-text) 0 0) content-box, 
-        linear-gradient(var(--color-text) 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-}
-
-.pub-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 12px;
-    padding: 2px;
-    background: linear-gradient(
-        90deg,
-        rgba(0, 122, 255, 0) 0%,
-        rgba(0, 122, 255, 0.8) 25%,
-        rgba(0, 122, 255, 0) 50%
-    );
-    background-size: 400% 100%;
-    background-position: 100% 0;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 0;
-    -webkit-mask: 
-        linear-gradient(var(--color-text) 0 0) content-box, 
-        linear-gradient(var(--color-text) 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-}
-
-.pub-item-wrapper:hover .pub-card::after {
-    opacity: 1;
-    animation: borderFlow 8s linear infinite;
-}
-
-@keyframes borderFlow {
-    0% {
-        background-position: 100% 0;
-    }
-    100% {
-        background-position: -300% 0;
-    }
-}
-
-.pub-item-wrapper:hover .pub-card {
-    background: var(--color-surface);
-    box-shadow: 0 4px 24px rgba(0, 122, 255, 0.12);
-    transform: translateY(-3px);
-}
-</style>
