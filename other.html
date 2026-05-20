@@ -4,12 +4,8 @@ title : Other
 navbar_title: Other
 ---
 
-<section class="other-page" aria-labelledby="other-title">
+<section class="other-page" aria-label="Weather and calendar">
     <header class="other-hero">
-        <div>
-            <p class="other-kicker">Weather and calendar</p>
-            <h1 id="other-title">Other</h1>
-        </div>
         <div class="other-clock" aria-live="polite">
             <span id="other-clock-date">--</span>
             <strong id="other-clock-time">--:--</strong>
@@ -116,12 +112,11 @@ navbar_title: Other
     border-bottom: 1px solid var(--color-border);
     display: flex;
     gap: 1rem;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-bottom: 1.4rem;
-    padding: 1.6rem 0 1.25rem;
+    padding: 0.9rem 0 1.25rem;
 }
 
-.other-kicker,
 .other-panel-kicker {
     color: var(--color-text-muted);
     font-size: 0.76rem;
@@ -130,13 +125,6 @@ navbar_title: Other
     line-height: 1.4;
     margin: 0 0 0.35rem;
     text-transform: uppercase;
-}
-
-.other-hero h1 {
-    font-size: clamp(2rem, 5vw, 3.6rem);
-    letter-spacing: 0;
-    line-height: 1;
-    margin: 0;
 }
 
 .other-clock {
@@ -451,13 +439,12 @@ navbar_title: Other
     }
 
     .other-hero {
-        align-items: flex-start;
-        flex-direction: column;
+        align-items: flex-end;
         padding-top: 1rem;
     }
 
     .other-clock {
-        justify-items: start;
+        justify-items: end;
         min-width: 0;
     }
 
