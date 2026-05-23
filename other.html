@@ -6,26 +6,6 @@ navbar_title: Other
 
 <section class="other-page" aria-label="Weather and calendar">
     <header class="other-hero">
-        <div class="time-progress" aria-label="Time progress">
-            <div class="time-progress-row">
-                <div class="time-progress-meta">
-                    <span>Today</span>
-                    <strong id="today-progress-text">--%</strong>
-                </div>
-                <div class="time-progress-track" aria-hidden="true">
-                    <span id="today-progress-bar"></span>
-                </div>
-            </div>
-            <div class="time-progress-row">
-                <div class="time-progress-meta">
-                    <span id="year-progress-label">Year</span>
-                    <strong id="year-progress-text">--%</strong>
-                </div>
-                <div class="time-progress-track" aria-hidden="true">
-                    <span id="year-progress-bar"></span>
-                </div>
-            </div>
-        </div>
         <div class="other-clock" aria-live="polite">
             <span id="other-clock-date">--</span>
             <strong id="other-clock-time">--:--</strong>
@@ -128,11 +108,11 @@ navbar_title: Other
 }
 
 .other-hero {
-    align-items: center;
+    align-items: flex-end;
     border-bottom: 1px solid var(--color-border);
     display: flex;
-    gap: 2rem;
-    justify-content: space-between;
+    gap: 1rem;
+    justify-content: flex-end;
     margin-bottom: 1.4rem;
     padding: 0.9rem 0 1.25rem;
 }
@@ -145,70 +125,6 @@ navbar_title: Other
     line-height: 1.4;
     margin: 0 0 0.35rem;
     text-transform: uppercase;
-}
-
-.time-progress {
-    display: grid;
-    flex: 1 1 auto;
-    gap: 0.78rem;
-    max-width: 760px;
-    min-width: 0;
-}
-
-.time-progress-row {
-    display: grid;
-    gap: 0.34rem;
-}
-
-.time-progress-meta {
-    align-items: baseline;
-    display: flex;
-    gap: 0.8rem;
-    justify-content: space-between;
-}
-
-.time-progress-meta span {
-    color: var(--color-text-muted);
-    font-size: 0.76rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    line-height: 1;
-    text-transform: uppercase;
-}
-
-.time-progress-meta strong {
-    color: var(--color-text);
-    font-size: 0.86rem;
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.time-progress-track {
-    background: rgba(var(--color-surface-muted-rgb), 0.86);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    height: 0.58rem;
-    overflow: hidden;
-    position: relative;
-}
-
-.time-progress-track::after {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
-    content: '';
-    inset: 0;
-    opacity: 0.28;
-    position: absolute;
-}
-
-.time-progress-track span {
-    background: linear-gradient(90deg, var(--color-link-hover) 0%, var(--color-link) 55%, var(--color-accent-strong) 100%);
-    border-radius: inherit;
-    box-shadow: 0 0 18px rgba(var(--color-accent-rgb), 0.18);
-    display: block;
-    height: 100%;
-    transition: width 0.45s var(--motion-ease);
-    width: 0%;
 }
 
 .other-clock {
@@ -535,13 +451,7 @@ navbar_title: Other
 
     .other-hero {
         align-items: flex-end;
-        flex-direction: column;
-        gap: 1rem;
         padding-top: 1rem;
-    }
-
-    .time-progress {
-        width: 100%;
     }
 
     .other-clock {
@@ -630,12 +540,7 @@ navbar_title: Other
 
     const clockEls = {
         date: document.getElementById('other-clock-date'),
-        time: document.getElementById('other-clock-time'),
-        todayProgressText: document.getElementById('today-progress-text'),
-        todayProgressBar: document.getElementById('today-progress-bar'),
-        yearProgressLabel: document.getElementById('year-progress-label'),
-        yearProgressText: document.getElementById('year-progress-text'),
-        yearProgressBar: document.getElementById('year-progress-bar')
+        time: document.getElementById('other-clock-time')
     };
 
     if (!weatherEls.title || !calendarEls.title || !clockEls.date) return;
@@ -783,39 +688,6 @@ navbar_title: Other
         });
     }
 
-    const SHANGHAI_OFFSET_MS = 8 * 60 * 60 * 1000;
-
-    function formatPercent(value) {
-        return value.toFixed(2) + '%';
-    }
-
-    function setProgress(barEl, textEl, value) {
-        if (!barEl || !textEl) return;
-        const boundedValue = Math.min(100, Math.max(0, value));
-        barEl.style.width = boundedValue.toFixed(4) + '%';
-        textEl.textContent = formatPercent(boundedValue);
-    }
-
-    function updateTimeProgress(now) {
-        const shanghaiTime = new Date(now.getTime() + SHANGHAI_OFFSET_MS);
-        const year = shanghaiTime.getUTCFullYear();
-        const secondsToday =
-            shanghaiTime.getUTCHours() * 3600 +
-            shanghaiTime.getUTCMinutes() * 60 +
-            shanghaiTime.getUTCSeconds() +
-            shanghaiTime.getUTCMilliseconds() / 1000;
-        const todayPercent = secondsToday / 86400 * 100;
-        const yearStart = Date.UTC(year, 0, 1);
-        const nextYearStart = Date.UTC(year + 1, 0, 1);
-        const yearPercent = (shanghaiTime.getTime() - yearStart) / (nextYearStart - yearStart) * 100;
-
-        if (clockEls.yearProgressLabel) {
-            clockEls.yearProgressLabel.textContent = String(year);
-        }
-        setProgress(clockEls.todayProgressBar, clockEls.todayProgressText, todayPercent);
-        setProgress(clockEls.yearProgressBar, clockEls.yearProgressText, yearPercent);
-    }
-
     function updateClock() {
         const now = new Date();
         clockEls.date.textContent = new Intl.DateTimeFormat('en-US', {
@@ -831,7 +703,6 @@ navbar_title: Other
             hour12: false,
             timeZone: 'Asia/Shanghai'
         }).format(now);
-        updateTimeProgress(now);
     }
 
     function daysInMonth(year, month) {
