@@ -484,6 +484,17 @@ navbar_title: Other
     justify-content: center;
     min-height: 3.25rem;
     position: relative;
+    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.calendar-day:hover,
+.calendar-day:focus-visible {
+    background: var(--color-accent-soft);
+    border-color: rgba(var(--color-accent-rgb), 0.34);
+    box-shadow: 0 8px 18px rgba(var(--color-accent-rgb), 0.12);
+    color: var(--color-accent-strong);
+    outline: none;
+    transform: translateY(-1px);
 }
 
 .calendar-day-muted {
