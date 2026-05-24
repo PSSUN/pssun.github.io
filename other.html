@@ -16,7 +16,6 @@ navbar_title: Other
             </div>
             <div class="year-progress-track" aria-hidden="true">
                 <span id="year-progress-fill"></span>
-                <i id="year-progress-marker"></i>
             </div>
             <div class="year-progress-foot">
                 <span id="year-progress-day">Day -- / --</span>
@@ -244,22 +243,6 @@ navbar_title: Other
     inset: 0;
     position: absolute;
     transform: translateX(42%);
-}
-
-.year-progress-track i {
-    background: linear-gradient(180deg, #8ec5ff 0%, var(--color-link) 48%, #0a58ca 100%);
-    border: none;
-    border-radius: 999px;
-    box-shadow: 0 5px 15px rgba(var(--color-accent-rgb), 0.24);
-    display: block;
-    height: 1.34rem;
-    left: 0%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: left 0.5s var(--motion-ease);
-    width: 0.32rem;
-    z-index: 2;
 }
 
 .year-progress-foot {
@@ -701,7 +684,6 @@ navbar_title: Other
         yearProgressTitle: document.getElementById('year-progress-title'),
         yearProgressPercent: document.getElementById('year-progress-percent'),
         yearProgressFill: document.getElementById('year-progress-fill'),
-        yearProgressMarker: document.getElementById('year-progress-marker'),
         yearProgressDay: document.getElementById('year-progress-day'),
         yearProgressLeft: document.getElementById('year-progress-left')
     };
@@ -868,7 +850,6 @@ navbar_title: Other
         if (clockEls.yearProgressTitle) clockEls.yearProgressTitle.textContent = String(year);
         if (clockEls.yearProgressPercent) clockEls.yearProgressPercent.textContent = boundedPercent.toFixed(2) + '%';
         if (clockEls.yearProgressFill) clockEls.yearProgressFill.style.width = boundedPercent.toFixed(4) + '%';
-        if (clockEls.yearProgressMarker) clockEls.yearProgressMarker.style.left = boundedPercent.toFixed(4) + '%';
         if (clockEls.yearProgressDay) clockEls.yearProgressDay.textContent = 'Day ' + dayOfYear + ' / ' + daysInYear;
         if (clockEls.yearProgressLeft) clockEls.yearProgressLeft.textContent = daysLeft + ' days left';
     }
