@@ -19,7 +19,7 @@ navbar_title: Tools
                     <div class="col-md-3 col-xl-2 mb-3 mb-md-0 p-md-3">
                         <div class="tool-media">
                             {% if tool.cover %}
-                            <img data-src="{{ tool.cover | relative_url }}" alt="{{ tool.title }}" class="lazy w-100 rounded-sm" src="{{ '/assets/images/empty_300x200.png' | relative_url }}">
+                            <img src="{{ tool.cover | relative_url }}" alt="{{ tool.title }}" class="w-100 rounded-sm" style="min-height: 80px;">
                             {% else %}
                             <svg class="bubble-visual-hash lazy w-100 rounded-sm" data-bubble-visual-hash="{{ tool.id }}" viewBox="0 0 300 200" aria-hidden="true" focusable="false"></svg>
                             {% endif %}
