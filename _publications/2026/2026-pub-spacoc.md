@@ -20,5 +20,6 @@ authors:
   - Deyu Meng (孟德宇)
   - Kai Ye (叶凯)
 links:
+  Paper: https://www.nature.com/articles/s41467-026-71882-2
   Code: https://github.com/xjtu-omics/SpatialCOC
 ---
