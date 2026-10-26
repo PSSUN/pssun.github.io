@@ -401,7 +401,7 @@ div.lazy {
 }
 
 .homepage-sidebar {
-    top: calc(var(--navbar-offset) + 1rem);
+    top: var(--navbar-offset);
 }
 
 .profile-portrait-mini {
