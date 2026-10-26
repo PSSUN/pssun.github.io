@@ -21,8 +21,8 @@ $(function () {
         }
     }
 
-    $('img.lazy, div.lazy:not(.always-load)').Lazy({visibleOnly: true, ...lazyLoadOptions});
-    $('div.lazy.always-load').Lazy({visibleOnly: false, ...lazyLoadOptions});
+    $('img.lazy:not(.always-load), div.lazy:not(.always-load)').Lazy({visibleOnly: true, ...lazyLoadOptions});
+    $('img.lazy.always-load, div.lazy.always-load').Lazy({visibleOnly: false, ...lazyLoadOptions});
 
     $('[data-toggle="tooltip"]').tooltip()
 

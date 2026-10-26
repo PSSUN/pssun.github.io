@@ -5,7 +5,7 @@
         <a href="{{ 'publications' | relative_url }}">(view all <i class="fas fa-angle-double-right"></i>)</a>
     </h6>
     {% for item in publications limit:include.limit %}
-        {% include widgets/publication_item.html item=item first=false last=false hide_bottom_border=forloop.last %}
+        {% include widgets/publication_item.html item=item first=false last=false hide_bottom_border=forloop.last eager=include.eager %}
     {% endfor %}
 </div>
 
