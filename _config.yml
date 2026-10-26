@@ -14,6 +14,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://pssun.github.io" # used for canonical URLs, Open Graph and the sitemap
+
+# Keep internal instruction files out of the published site.
+exclude:
+  - AGENTS.md
 
 # Build settings
 markdown: kramdown
