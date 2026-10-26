@@ -104,6 +104,23 @@
                     </div>
                     <i class="fas fa-external-link-alt ml-auto text-muted small"></i>
                 </a>
+                {% if site.data.profile.gscholar %}
+                {%- if site.data.profile.gscholar contains 'scholar.google' -%}
+                {%- assign gscholar_url = site.data.profile.gscholar -%}
+                {%- else -%}
+                {%- assign gscholar_url = 'https://scholar.google.com/citations?user=' | append: site.data.profile.gscholar -%}
+                {%- endif -%}
+                <a href="{{ gscholar_url }}" target="_blank" class="d-flex align-items-center text-decoration-none link-item py-2">
+                    <div class="link-icon mr-3">
+                        <i class="fab fa-google-scholar"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">Google Scholar</div>
+                        <div class="link-desc text-muted small">Peisen Sun (孙培森)</div>
+                    </div>
+                    <i class="fas fa-external-link-alt ml-auto text-muted small"></i>
+                </a>
+                {% endif %}
             </div>
         </div>
 
