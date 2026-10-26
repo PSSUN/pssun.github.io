@@ -2,7 +2,7 @@
 
 <div class="my-3 p-0 shadow-sm rounded-xl section-card news-panel">
     <h6 class="section-heading"><i class="fas fa-rss"></i> News</h6>
-    <div class="p-3 small">
+    <div class="px-4 py-3 small">
         {% for year in news_by_year %}
         <div class="news-group {% if not_first -%}border-top{%- endif %}">
             {% assign not_first = true %}

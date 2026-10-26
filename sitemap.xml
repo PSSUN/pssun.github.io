@@ -3,7 +3,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for p in site.pages %}
-{%- if p.url == '/404.html' or p.url == '/sitemap.xml' %}{% continue %}{% endif %}
+{%- if p.url == '/404.html' or p.url == '/sitemap.xml' or p.url contains '/assets/' %}{% continue %}{% endif %}
   <url>
     <loc>{{ p.url | remove: 'index.html' | remove: '.html' | absolute_url }}</loc>
   </url>
