@@ -17,13 +17,13 @@ orcid: 0000-0003-0796-2133
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    I am Peisen Sun, a Ph.D. candidate in the Department of Control Science and Engineering at Xi'an Jiaotong University. My research primarily focuses on bioinformatics.
+    I am Peisen Sun, a Ph.D. candidate in the Department of Control Science and Engineering at Xi'an Jiaotong University. My research focuses on bioinformatics, with an emphasis on quantifying the functional impact of somatic variants at single-cell resolution and dissecting tumor tissues through spatial multi-omics.
   </p>
   <p>
     I employ machine learning and artificial intelligence approaches to address complex genomics problems, leveraging state-of-the-art single-cell and spatial omics technologies. My work aims to elucidate the molecular mechanisms underlying biological systems.
   </p>
   <p>
-    My research contributions have been published as first author (including co-first author) in journals such as Cell Genomics and Nature Communications.
+    My research contributions have been published as first author (including co-first author) in venues such as Cell Genomics, Nature Communications, and bioRxiv.
   </p>
 
 portrait_url: /assets/images/photos/me.jpg
@@ -35,15 +35,15 @@ education:
 - name: Xi'an Jiaotong University
   logo: /assets/images/badges/XJTU.png
   position: Ph.D. in Control Science and Engineering
-#  date: Sep. 2022 - present
+  date: Sep. 2022 - present
 - name: Shaanxi Normal University
   logo: /assets/images/badges/SNNU.png
   position: M.S. in Bioinformatics
-#  date: Sep. 2018 - Jul. 2021
+  date: Sep. 2018 - Jul. 2021
 - name: Northwest A&F University
   logo: /assets/images/badges/NWAFU.png
   position: B.S. in Bioinformatics
-#  date: Sep. 2014 - Jul. 2018
+  date: Sep. 2014 - Jul. 2018
 
 
 awards:

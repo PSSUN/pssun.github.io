@@ -11,5 +11,6 @@ tags:
   - Single-cell
   - SNV
 links:
+  Paper: https://doi.org/10.64898/2026.10.28.760887
   GitHub: https://github.com/xjtu-omics/PrismSNV
 ---

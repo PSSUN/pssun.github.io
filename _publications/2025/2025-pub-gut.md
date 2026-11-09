@@ -4,6 +4,7 @@ date:           2025-11-24
 selected:       false
 pub:            "Gut Microbes"
 pub_date:       "2025"
+semantic_scholar_id: a0bf2e8daad31746edb8261f3001c55f2a0ca2d8
 
 abstract: >-
     The intestine is a highly compartmentalized organ, with distinct segments exhibiting both varying susceptibilities and responses to enteric pathogens, although the cellular and molecular bases of these responses remain elusive. Here, we used Salmonella Typhimurium (S. Tm), a prominent enteric pathogen that causes human colitis, to establish a murine model of Salmonella enterocolitis. By integrating bulk RNA-seq, single-cell RNA-seq, and spatial RNA-seq data, we present a comprehensive spatiotemporal single-cell transcriptomic landscape of the colon over a week-long time course of infection. We identified the distal colon as the intestinal segment where most of the host responses were initiated, with distal colonocytes (DCCs) being the most responsive epithelial cells upon the onset of infection. Furthermore, by correlating our findings with human intestinal single-cell transcriptome data, we identified a human colonocyte population that shares many characteristics with murine DCCs. Our study advances the understanding of the cellular and molecular basis of compartmentalized intestinal responses to pathogenic insults and may pave the way for novel preventive and therapeutic strategies to mitigate intestinal damage and combat intestinal infections.

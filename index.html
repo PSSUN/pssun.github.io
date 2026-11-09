@@ -4,6 +4,33 @@ title : Homepage
 navbar_title: Home
 ---
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Peisen Sun",
+  "alternateName": "孙培森",
+  "url": "{{ '/' | absolute_url }}",
+  "image": "{{ '/assets/images/photos/me.jpg' | absolute_url }}",
+  "jobTitle": "Ph.D. Student",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Xi'an Jiaotong University"
+  },
+  "alumniOf": [
+    { "@type": "Organization", "name": "Shaanxi Normal University" },
+    { "@type": "Organization", "name": "Northwest A&F University" }
+  ],
+  "knowsAbout": ["Bioinformatics", "Single-cell Transcriptomics", "Spatial Transcriptomics", "Somatic Variants", "Machine Learning"],
+  "sameAs": [
+    "https://scholar.google.com/citations?user=MtCpY1sAAAAJ&hl",
+    "https://github.com/PSSUN",
+    "https://twitter.com/Sun_python",
+    "https://orcid.org/0000-0003-0796-2133"
+  ]
+}
+</script>
+
 <div class="row">
     <div class="col-lg-3 col-md-4">
         {% include widgets/profile_card_mini.html %}

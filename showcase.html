@@ -3,16 +3,6 @@ layout: default
 title : Showcase
 navbar_title: Showcase
 container_class: container-xl
-showcase_photos:
-- src: ./assets/images/photos/Liverpool.jpg
-  title: Liverpool
-  desc: Liverpool, UK
-- src: ./assets/images/photos/kunmingpool.jpg
-  title: Kunming Pool
-  desc: Xi'an, China
-- src: ./assets/images/photos/nanning.jpg
-  title: Nanning
-  desc: Nanning, China
 ---
 
 <div style="min-height: calc(100vh - 200px); position: relative; z-index: 1;">
@@ -27,7 +17,8 @@ showcase_photos:
 
         <div class="p-2 col-md-4 col-sm-6 col-6">
             <div class="card border-0 shadow-sm">
-                {% include widgets/carousel.html id="showcase-photos" images=page.showcase_photos height="400px" %}
+                {%- assign photo_card = site.showcase | where: "show", true | sort: "date" | reverse | first -%}
+                {% include widgets/carousel.html id="showcase-photos" images=photo_card.images height=photo_card.height %}
             </div>
         </div>
     </div>

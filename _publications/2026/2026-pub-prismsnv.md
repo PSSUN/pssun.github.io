@@ -4,6 +4,7 @@ date:           2026-11-02 00:01:00 +0800
 selected:       true
 pub:            "bioRxiv"
 pub_date:       "2026"
+semantic_scholar_id: 78903056e96d0fdd1169be62b0487bb8669ac5c5
 abstract: >-
   Somatic SNVs are commonly prioritized by recurrence or sequence annotation, leaving the molecular consequences of private variants unresolved. We developed PrismSNV and Ligo-Seq, a single-cell full-length transcriptome sequencing platform, to quantify transcriptomic displacement associated with within-cell SNV-state toggling. Across 26 samples from three cancer types, more than 60% of analyzed SNVs showed significant cell-type-specific displacement with over 30% variation in magnitude. Sequence-based deleteriousness was poorly aligned with cellular displacement, and fewer than 3% of top-displacement SNVs across three tumor types were catalogued in ClinVar. Displacement was strongest in transcriptionally plastic, less differentiated states. Analysis of 655,349 CD4+ T-cell transcriptomes further showed that SNV-gene associations changed in magnitude and sometimes direction during activation. Lack of recurrence or clinical annotation does not imply transcriptomic inertness; variant impact is shaped by cellular context rather than sequence alone, establishing the variant-cell pair as a critical unit for interpreting somatic variation.
 cover:          /assets/images/covers/prismsnv.png
@@ -33,11 +34,12 @@ authors:
   - Dan Xu
   - Xiaofei Yang (杨晓飞)
   - Stephen J. Bush
-  - Songmei Geng
+  - Songmei Geng (耿松梅)
   - Deyu Meng (孟德宇)
-  - Xuexin Li#
+  - Xuexin Li (李薛鑫)#
   - Kai Ye (叶凯)#
 links:
   Paper: https://doi.org/10.64898/2026.10.28.760887
   Code: https://github.com/xjtu-omics/PrismSNV
+  Tools: /tools
 ---
